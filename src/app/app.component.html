@@ -1,0 +1,19 @@
+<app-header
+  *ngIf="
+    authService.isLoggedIn &&
+    !(_router.url === '/pages-error404' || _router.url === '/acesso-negado')
+  "
+></app-header>
+<app-sidebar
+  *ngIf="
+    authService.isLoggedIn &&
+    !(_router.url === '/pages-error404' || _router.url === '/acesso-negado')
+  "
+></app-sidebar>
+<router-outlet></router-outlet>
+<app-footer
+  *ngIf="
+    authService.isLoggedIn &&
+    !(_router.url === '/pages-error404' || _router.url === '/acesso-negado')
+  "
+></app-footer>
