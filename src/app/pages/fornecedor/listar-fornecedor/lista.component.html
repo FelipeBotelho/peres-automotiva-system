@@ -1,0 +1,91 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Fornecedores</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <span routerLink="/" class="pointer">Home</span>
+        </li>
+        <li class="breadcrumb-item">Administrativo</li>
+        <li class="breadcrumb-item active">Fornecedores</li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <p class="text-end">
+      <a class="btn btn-info" [routerLink]="['/fornecedores/adicionar-novo']"
+        >Novo Fornecedor</a
+      >
+    </p>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Fornecedores Cadastrados</h5>
+          <table
+            datatable
+            [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger"
+            style="width: 100%"
+            class="row-border hover table datatable"
+          >
+            <thead>
+              <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Documento</th>
+                <th scope="col">Contato</th>
+                <th scope="col">Ativo</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let fornecedor of fornecedores; let last = last">
+                <td>{{ fornecedor.nome }}</td>
+                <td>
+                  {{ fornecedor.documento | mask : "00.000.000/0000-00" }}
+                </td>
+                <td>
+                  {{
+                    fornecedor.contato.length > 11
+                      ? (fornecedor.contato | mask : "(000) 0 0000-0000")
+                      : (fornecedor.contato | mask : "(000) 0000-0000")
+                  }}
+                </td>
+                <td>
+                  <div class="form-check form-switch">
+                    <input
+                      [checked]="fornecedor.ativo"
+                      class="form-check-input"
+                      type="checkbox"
+                      id="flexSwitchCheckDisabled"
+                      disabled
+                    />
+                  </div>
+                </td>
+                <td>
+                  <a
+                    class="btn btn-info"
+                    [routerLink]="['/fornecedores/detalhes', fornecedor.id]"
+                  >
+                    <span class="ri-phone-find-line"></span> </a
+                  >&nbsp;
+                  <a
+                    class="btn btn-warning"
+                    [routerLink]="['/fornecedores/editar', fornecedor.id]"
+                  >
+                    <span class="ri-pencil-line"></span> </a
+                  >&nbsp;
+                  <a
+                    class="btn btn-danger"
+                    [routerLink]="['/fornecedores/excluir', fornecedor.id]"
+                  >
+                    <span class="ri-delete-bin-2-line"></span>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

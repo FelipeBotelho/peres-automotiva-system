@@ -49,6 +49,13 @@ const routes: Routes = [
         (m) => m.AuthenticationModule
       ),
   },
+  {
+    path: 'fornecedores',
+    loadChildren: () =>
+      import('./pages/fornecedor/fornecedor.module').then(
+        (m) => m.FornecedorModule
+      ),
+  },
   { path: 'acesso-negado', component: AcessoNegadoComponent },
   { path: 'pages-error404', component: PagesError404Component },
 

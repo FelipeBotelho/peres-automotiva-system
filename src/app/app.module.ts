@@ -47,6 +47,9 @@ import { environment } from 'src/environments/environment';
 import { NgxMaskModule } from 'ngx-mask';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FornecedorModule } from './pages/fornecedor/fornecedor.module';
+import { HttpClientModule } from '@angular/common/http';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [
@@ -90,6 +93,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
@@ -98,6 +102,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AngularFireModule,
     NgxMaskModule.forRoot(),
     ToastrModule.forRoot(),
+    DataTablesModule.forRoot(),
+    FornecedorModule,
   ],
   providers: [AuthService, UserRoleService],
   bootstrap: [AppComponent],
