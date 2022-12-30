@@ -5,6 +5,8 @@ import { LABELS_DATATABLE } from 'src/app/utils/datatable-helper';
 import { MaskApplierService } from 'ngx-mask';
 import { ChangeDetectorRef, AfterContentChecked } from '@angular/core';
 import { Subject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lista',
@@ -23,8 +25,31 @@ export class ListaComponent implements OnInit, OnDestroy {
   };
   dtTrigger: Subject<any> = new Subject<any>();
 
-  constructor(private fornecedorService: FornecedorService) {
+  constructor(
+    private fornecedorService: FornecedorService,
+    private toastr: ToastrService,
+    private _router: Router
+  ) {
     this.isLoaded = false;
+  }
+
+  excluir(idFornecedor: any) {
+    this.dtTrigger.unsubscribe();
+    this.fornecedorService.excluirFornecedor(idFornecedor).subscribe({
+      next: (result = true) => {
+        this.toastr.success('Fornecedor removido com sucesso!');
+        this.reloadComponent();
+      },
+      error: (error) => {
+        this.toastr.error(error.message);
+      },
+    });
+  }
+
+  reloadComponent() {
+    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this._router.onSameUrlNavigation = 'reload';
+    this._router.navigate(['/fornecedores/listar-todos']);
   }
 
   ngOnInit(): void {

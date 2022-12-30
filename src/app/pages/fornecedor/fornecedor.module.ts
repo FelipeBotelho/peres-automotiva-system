@@ -20,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditarComponent } from './editar/editar.component';
 import { ExcluirComponent } from './excluir/excluir.component';
 import { DataTablesModule } from 'angular-datatables/src/angular-datatables.module';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { DataTablesModule } from 'angular-datatables/src/angular-datatables.modu
     TextMaskModule,
     NgxSpinnerModule,
     NgxMaskModule,
+    SweetAlert2Module,
     ToastrModule,
   ],
   providers: [FornecedorService, FornececedorGuard, FornecedorResolve],

@@ -74,12 +74,19 @@
                   >
                     <span class="ri-pencil-line"></span> </a
                   >&nbsp;
-                  <a
-                    class="btn btn-danger"
-                    [routerLink]="['/fornecedores/excluir', fornecedor.id]"
-                  >
+                  <span class="btn btn-danger" [swal]="deleteSwal">
                     <span class="ri-delete-bin-2-line"></span>
-                  </a>
+                  </span>
+                  <swal
+                    #deleteSwal
+                    title="Remover Fornecedor"
+                    text="Tem certeza dessa remoção?"
+                    icon="question"
+                    [showCancelButton]="true"
+                    [focusCancel]="true"
+                    (confirm)="excluir(fornecedor.id)"
+                  >
+                  </swal>
                 </td>
               </tr>
             </tbody>

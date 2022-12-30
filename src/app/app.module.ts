@@ -50,6 +50,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FornecedorModule } from './pages/fornecedor/fornecedor.module';
 import { HttpClientModule } from '@angular/common/http';
 import { DataTablesModule } from 'angular-datatables';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
@@ -103,6 +104,7 @@ import { DataTablesModule } from 'angular-datatables';
     NgxMaskModule.forRoot(),
     ToastrModule.forRoot(),
     DataTablesModule.forRoot(),
+    SweetAlert2Module.forRoot(),
     FornecedorModule,
   ],
   providers: [AuthService, UserRoleService],
