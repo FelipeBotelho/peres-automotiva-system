@@ -4,7 +4,6 @@ import {
   FormGroup,
   Validators,
   FormControlName,
-  AbstractControl,
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -21,6 +20,7 @@ import { FormBaseComponent } from '../../../components/base-components/form-base
 @Component({
   selector: 'app-editar',
   templateUrl: './editar.component.html',
+  styleUrls: ['./editar.component.css'],
 })
 export class EditarComponent extends FormBaseComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })
@@ -43,7 +43,6 @@ export class EditarComponent extends FormBaseComponent implements OnInit {
     private toastr: ToastrService,
     private route: ActivatedRoute,
     config: NgbModalConfig,
-    private modalService: NgbModal,
     private spinner: NgxSpinnerService
   ) {
     super();
@@ -90,48 +89,28 @@ export class EditarComponent extends FormBaseComponent implements OnInit {
     this.spinner.show();
 
     this.fornecedorForm = this.fb.group({
-      id: '',
       nome: ['', [Validators.required]],
-      documento: '',
+      documento: ['', [Validators.required]],
+      contato: ['', [Validators.required]],
       ativo: ['', [Validators.required]],
-    });
+      tipoFornecedor: [1, [Validators.required]],
 
-    this.enderecoForm = this.fb.group({
-      logradouro: ['', [Validators.required]],
-      numero: ['', [Validators.required]],
-      complemento: [''],
-      bairro: ['', [Validators.required]],
-      cep: ['', [Validators.required]],
-      cidade: ['', [Validators.required]],
-      estado: ['', [Validators.required]],
-      fornecedorId: '',
+      endereco: this.fb.group({
+        logradouro: ['', [Validators.required]],
+        numero: ['', [Validators.required]],
+        complemento: [''],
+        bairro: ['', [Validators.required]],
+        cep: ['', [Validators.required]],
+        cidade: ['', [Validators.required]],
+        estado: ['', [Validators.required]],
+      }),
     });
 
     this.preencherForm();
-
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 1000);
   }
 
   preencherForm() {
-    this.fornecedorForm.patchValue({
-      id: this.fornecedor.id,
-      nome: this.fornecedor.nome,
-      ativo: this.fornecedor.ativo,
-      documento: this.fornecedor.documento,
-    });
-
-    this.enderecoForm.patchValue({
-      id: this.fornecedor.endereco.id,
-      logradouro: this.fornecedor.endereco.logradouro,
-      numero: this.fornecedor.endereco.numero,
-      complemento: this.fornecedor.endereco.complemento,
-      bairro: this.fornecedor.endereco.bairro,
-      cep: this.fornecedor.endereco.cep,
-      cidade: this.fornecedor.endereco.cidade,
-      estado: this.fornecedor.endereco.estado,
-    });
+    this.fornecedorForm.patchValue(this.fornecedor);
   }
 
   ngAfterViewInit() {
@@ -142,26 +121,35 @@ export class EditarComponent extends FormBaseComponent implements OnInit {
   }
 
   buscarCep() {
-    let cep = this.enderecoForm.get('cep')?.value;
+    let cep = this.fornecedorForm.get('endereco.cep')?.value;
     if (cep) {
       cep = StringUtils.somenteNumeros(cep);
       if (cep.length < 8) return;
 
       this.fornecedorService.consultarCep(cep).subscribe({
-        next: (cepRetorno) => this.preencherEnderecoConsulta(cepRetorno),
-        error: (erro) => this.errors.push(erro),
+        next: (cepRetorno) => {
+          this.preencherEnderecoConsulta(cepRetorno);
+        },
+        error: (erro) => {
+          this.toastr.error('Cep Inválido ou Não Encontrado');
+        },
       });
     }
   }
-
   preencherEnderecoConsulta(cepConsulta: CepConsulta) {
-    this.enderecoForm.patchValue({
-      logradouro: cepConsulta.logradouro,
-      bairro: cepConsulta.bairro,
-      cep: cepConsulta.cep,
-      cidade: cepConsulta.localidade,
-      estado: cepConsulta.uf,
-    });
+    if (!cepConsulta.erro) {
+      this.fornecedorForm.patchValue({
+        endereco: {
+          logradouro: cepConsulta.logradouro,
+          bairro: cepConsulta.bairro,
+          cep: cepConsulta.cep,
+          cidade: cepConsulta.localidade,
+          estado: cepConsulta.uf,
+        },
+      });
+    } else {
+      this.toastr.warning('CEP não encontrado');
+    }
   }
 
   editarFornecedor() {
@@ -180,35 +168,8 @@ export class EditarComponent extends FormBaseComponent implements OnInit {
       this.fornecedorService
         .atualizarFornecedor(id, fornecedorObject)
         .subscribe({
-          next: (sucesso) => {
+          next: (sucesso = true) => {
             this.processarSucesso(true);
-          },
-          error: (falha) => {
-            this.processarFalha(falha);
-          },
-        });
-    }
-  }
-
-  editarEndereco() {
-    if (this.enderecoForm.dirty && this.enderecoForm.valid) {
-      const id = this.fornecedor.id!;
-      const enderecoObject = Object.assign(
-        {},
-        this.fornecedor.endereco,
-        this.enderecoForm.value
-      );
-      enderecoObject.cep = StringUtils.somenteNumeros(enderecoObject.cep);
-      const fornecedorObject = Object.assign({}, this.fornecedor);
-      fornecedorObject.endereco = enderecoObject;
-      delete fornecedorObject.id;
-
-      this.fornecedorService
-        .atualizarFornecedor(id, fornecedorObject)
-        .subscribe({
-          next: () => {
-            this.modalService.dismissAll();
-            this.processarSucesso(false);
           },
           error: (falha) => {
             this.processarFalha(falha);
@@ -229,9 +190,9 @@ export class EditarComponent extends FormBaseComponent implements OnInit {
     );
     if (fechar) {
       if (toast) {
-        toast.onHidden.subscribe(() => {
-          this.router.navigate(['/fornecedores/listar-todos']);
-        });
+        // toast.onHidden.subscribe(() => {
+        //   this.router.navigate(['/fornecedores/listar-todos']);
+        // });
       }
     }
   }
@@ -241,9 +202,5 @@ export class EditarComponent extends FormBaseComponent implements OnInit {
     this.toastr.error('Ocorreu um erro!', 'Opa :(', {
       timeOut: 500,
     });
-  }
-
-  abrirModal(content: any) {
-    this.modalService.open(content);
   }
 }

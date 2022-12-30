@@ -3,8 +3,8 @@ import { DataTable } from 'src/assets/js/simple-datatables';
 export const LABELS_DATATABLE: any = {
   processing: 'Procesando...',
   search: 'Buscar:',
-  lengthMenu: 'Exibir _MENU_ registros',
-  info: 'Exibindo desde _START_ até _END_ de _TOTAL_ elementos',
+  lengthMenu: '_MENU_ por página',
+  info: 'Exibindo de _START_ até _END_ de _TOTAL_ elementos',
   infoEmpty: 'Nenhum elemento exibido.',
   infoFiltered: '(filtrado _MAX_ elementos total)',
   infoPostFix: '',

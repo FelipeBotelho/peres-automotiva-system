@@ -23,14 +23,8 @@ export class ListaComponent implements OnInit, OnDestroy {
   };
   dtTrigger: Subject<any> = new Subject<any>();
 
-  constructor(
-    private fornecedorService: FornecedorService,
-    private cdref: ChangeDetectorRef
-  ) {
+  constructor(private fornecedorService: FornecedorService) {
     this.isLoaded = false;
-  }
-  ngAfterContentChecked() {
-    this.cdref.detectChanges();
   }
 
   ngOnInit(): void {

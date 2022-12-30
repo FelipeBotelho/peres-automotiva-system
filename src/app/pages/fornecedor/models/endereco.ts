@@ -16,4 +16,5 @@ export class CepConsulta {
   bairro!: string;
   localidade!: string;
   uf!: string;
+  erro?: boolean;
 }
