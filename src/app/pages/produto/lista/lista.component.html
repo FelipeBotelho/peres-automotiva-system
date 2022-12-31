@@ -1,67 +1,107 @@
-<div class="container main-container">
-  <h1>Lista de Produtos</h1>
-  <hr />
-
-  <p>
-    <a class="btn btn-info" [routerLink]="['/produtos/adicionar-novo']"
-      >Novo Produto</a
-    >
-  </p>
-
-  <table class="table table-hover">
-    <thead class="thead-dark">
-      <tr>
-        <th></th>
-        <th>Nome</th>
-        <th>Fornecedor</th>
-        <th>Valor</th>
-        <th>Ativo?</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let produto of produtos">
-        <td>
-          <img src="{{ produto.imagem }}" style="width: 70px; height: 100px" />
-        </td>
-        <td>
-          {{ produto.nome }}
-        </td>
-        <td>
-          {{ produto?.fornecedor?.nome }}
-        </td>
-        <td>
-          {{ produto.valor | currency }}
-        </td>
-        <td>
-          <input
-            [checked]="produto.ativo"
-            class="check-box"
-            disabled="disabled"
-            type="checkbox"
-          />
-        </td>
-        <td class="text-right">
-          <a
-            class="btn btn-warning"
-            [routerLink]="['/produtos/detalhes', produto.id]"
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Produtos</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <span routerLink="/" class="pointer">Home</span>
+        </li>
+        <li class="breadcrumb-item">Administrativo</li>
+        <li class="breadcrumb-item active">Produtos</li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <p class="text-end">
+      <a class="btn btn-info" [routerLink]="['/produtos/adicionar-novo']"
+        >Novo Produto</a
+      >
+    </p>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Produtos Cadastrados</h5>
+          <table
+            datatable
+            [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger"
+            style="width: 100%"
+            class="row-border hover table datatable"
           >
-            <span class="fa fa-search"></span> </a
-          >&nbsp;
-          <a
-            class="btn btn-info"
-            [routerLink]="['/produtos/editar', produto.id]"
-          >
-            <span class="fa fa-pencil-alt"></span> </a
-          >&nbsp;
-          <a
-            class="btn btn-danger"
-            [routerLink]="['/produtos/excluir', produto.id]"
-          >
-            <span class="fa fa-trash"></span>
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+            <thead>
+              <tr>
+                <th></th>
+                <th scope="col">Nome</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Ativo</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let produto of produtos; let last = last">
+                <td>
+                  <img
+                    src="{{ produto.imagem }}"
+                    style="width: 70px; height: 70px"
+                  />
+                </td>
+                <td>
+                  {{ produto.nome }}
+                </td>
+                <td>
+                  {{ produto?.categoria?.nome }}
+                </td>
+                <td>
+                  {{ produto?.marca?.nome }}
+                </td>
+                <td>
+                  {{ produto.valor | currency }}
+                </td>
+                <td>
+                  <div class="form-check form-switch">
+                    <input
+                      [checked]="produto.ativo"
+                      class="form-check-input"
+                      type="checkbox"
+                      id="flexSwitchCheckDisabled"
+                      disabled
+                    />
+                  </div>
+                </td>
+                <td>
+                  <a
+                    class="btn btn-info"
+                    [routerLink]="['/produtos/detalhes', produto.id]"
+                  >
+                    <span class="ri-phone-find-line"></span> </a
+                  >&nbsp;
+                  <a
+                    class="btn btn-warning"
+                    [routerLink]="['/produtos/editar', produto.id]"
+                  >
+                    <span class="ri-pencil-line"></span> </a
+                  >&nbsp;
+                  <span class="btn btn-danger" [swal]="deleteSwal">
+                    <span class="ri-delete-bin-2-line"></span>
+                  </span>
+                  <swal
+                    #deleteSwal
+                    title="Remover Produto"
+                    text="Tem certeza dessa remoção?"
+                    icon="question"
+                    [showCancelButton]="true"
+                    [focusCancel]="true"
+                    (confirm)="excluir(produto.id)"
+                  >
+                  </swal>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

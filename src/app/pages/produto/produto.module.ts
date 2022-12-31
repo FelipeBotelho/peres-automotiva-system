@@ -20,6 +20,10 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { ListaComponent } from './lista/lista.component';
 import { ProdutoService } from './services/produto.service';
 import { ProdutoGuard } from './services/produto.guard';
+import { NgxMaskModule } from 'ngx-mask';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { ToastrModule } from 'ngx-toastr';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [
@@ -32,13 +36,18 @@ import { ProdutoGuard } from './services/produto.guard';
   ],
   imports: [
     CommonModule,
-    ProdutoRoutingModule,
     TextMaskModule,
     NgxSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
+    TextMaskModule,
+    NgxMaskModule,
+    SweetAlert2Module,
+    ToastrModule,
+    DataTablesModule,
     ImageCropperModule,
     CurrencyMaskModule,
+    ProdutoRoutingModule,
   ],
   providers: [ProdutoService, ProdutoGuard],
 })

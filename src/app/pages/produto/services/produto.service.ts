@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, defer, from, Observable } from 'rxjs';
 import { map, concatMap, catchError } from 'rxjs/operators';
 
 import { BaseService } from '../../../shared/services/base.service';
@@ -10,13 +10,18 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class ProdutoService extends BaseService {
   private dbPath = '/produto';
   produtoRef: AngularFirestoreCollection<Produto>;
 
-  constructor(private http: HttpClient, private db: AngularFirestore) {
+  constructor(
+    private http: HttpClient,
+    private db: AngularFirestore,
+    private toast: ToastrService
+  ) {
     super();
     this.produtoRef = db.collection(this.dbPath);
   }
@@ -34,50 +39,53 @@ export class ProdutoService extends BaseService {
       .pipe(catchError(super.serviceError));
   }
 
-  obterPorId(id: string): Observable<any> {
-    debugger;
-    const colProduto = this.db.doc('/produto/' + id);
-    const item = colProduto
-      .snapshotChanges()
-      .pipe(
-        map((changes: any) => {
-          const data: any = changes.payload.data();
-          const idFornecedor = data.idFornecedor;
-          return this.db
-            .doc('fornecedor/' + idFornecedor)
-            .valueChanges()
-            .pipe(
-              map((colFornecedor: any) => {
-                return Object.assign({
-                  nomeFornecedor: colFornecedor.nome,
-                  ...data,
+  excluirProduto(id: string) {
+    this.db
+      .collection('estoque', (ref) => ref.where('idProduto', '==', id))
+      .get()
+      .subscribe({
+        next: (ss) => {
+          if (ss.docs.length !== 0) {
+            //deletar estoque e produto
+            ss.docs[0].ref.delete().then((deletted) => {
+              this.produtoRef
+                .doc(id)
+                .delete()
+                .then((delleted) => {
+                  this.toast.success(
+                    'Produto removido e estoque zerado com sucesso'
+                  );
                 });
-              })
-            );
-        }),
-        concatMap((feeds: any) => combineLatest(feeds))
-      )
-      .pipe(map((arr: any) => arr[0]));
-    return item;
+            });
+          } else {
+            this.produtoRef
+              .doc(id)
+              .delete()
+              .then((delleted) => {
+                this.toast.success('Produto removido com sucesso!');
+              });
+          }
+        },
+        error: (err) => {
+          this.toast.error(err.message);
+        },
+      });
   }
 
-  // consultarCep(cep: string): Observable<CepConsulta> {
-  //   return this.http
-  //     .get<CepConsulta>(`https://viacep.com.br/ws/${cep}/json/`)
-  //     .pipe(catchError(super.serviceError));
-  // }
+  obterPorId(id: string): Observable<any> {
+    return this.db
+      .doc('/produto/' + id)
+      .valueChanges({ idField: 'id' })
+      .pipe(catchError(super.serviceError));
+  }
 
-  // novoFornecedor(fornecedor: Fornecedor): Observable<any> {
-  //   return defer(() => from(this.db.collection('fornecedor').add(fornecedor)));
-  // }
+  novoProduto(produto: Produto): Observable<any> {
+    produto.dataAtualizacao = new Date();
+    produto.dataCadastro = new Date();
+    return defer(() => from(this.db.collection('produto').add(produto)));
+  }
 
-  // excluirFornecedor(id: string): Observable<any> {
-  //   return defer(() => from(this.produtoRef.doc(id).delete()));
-  // }
-
-  // atualizarFornecedor(id: string, fornecedor: Fornecedor): Observable<any> {
-  //   return defer(() =>
-  //     from(this.db.doc('/fornecedor/' + id).update(fornecedor))
-  //   );
-  // }
+  atualizarProduto(id: string, produto: Produto): Observable<any> {
+    return defer(() => from(this.db.doc('/produto/' + id).update(produto)));
+  }
 }

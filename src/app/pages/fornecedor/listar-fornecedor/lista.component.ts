@@ -30,6 +30,7 @@ export class ListaComponent implements OnInit, OnDestroy {
 
   excluir(idFornecedor: any) {
     this.dtTrigger.unsubscribe();
+    //VALIDAR SE EXISTE PRODUTOS DESSE FORNECEDOR
     this.fornecedorService.excluirFornecedor(idFornecedor).subscribe({
       next: (result = true) => {
         this.toastr.success('Fornecedor removido com sucesso!');
