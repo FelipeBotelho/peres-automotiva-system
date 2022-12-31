@@ -1,5 +1,3 @@
-import { DataTable } from 'src/assets/js/simple-datatables';
-
 export const LABELS_DATATABLE: any = {
   processing: 'Procesando...',
   search: 'Buscar:',
@@ -21,4 +19,12 @@ export const LABELS_DATATABLE: any = {
     sortAscending: ': Ordenar por ordem ascendente',
     sortDescending: ': Ordenar por ordem descendente',
   },
+};
+
+export const DEFAULT_DATATABLE_CONFIG = {
+  search: true,
+  paging: true,
+  responsive: true,
+  language: LABELS_DATATABLE,
+  destroy: true,
 };

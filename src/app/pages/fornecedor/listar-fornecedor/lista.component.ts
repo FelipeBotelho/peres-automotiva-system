@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { FornecedorService } from '../services/fornecedor.service';
 import { Fornecedor } from '../models/fornecedor';
-import { LABELS_DATATABLE } from 'src/app/utils/datatable-helper';
+import { DEFAULT_DATATABLE_CONFIG } from 'src/app/utils/datatable-helper';
 import { MaskApplierService } from 'ngx-mask';
 import { ChangeDetectorRef, AfterContentChecked } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -17,12 +17,7 @@ export class ListaComponent implements OnInit, OnDestroy {
   public fornecedores: Fornecedor[] = [];
   errorMessage!: string;
   isLoaded: boolean = false;
-  dtOptions: DataTables.Settings = {
-    search: true,
-    paging: true,
-    responsive: true,
-    language: LABELS_DATATABLE,
-  };
+  dtOptions: DataTables.Settings = DEFAULT_DATATABLE_CONFIG;
   dtTrigger: Subject<any> = new Subject<any>();
 
   constructor(

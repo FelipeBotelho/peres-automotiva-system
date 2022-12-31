@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -51,7 +51,11 @@ import { FornecedorModule } from './pages/fornecedor/fornecedor.module';
 import { HttpClientModule } from '@angular/common/http';
 import { DataTablesModule } from 'angular-datatables';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { ProdutoModule } from './pages/produto/produto.module';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
 
+registerLocaleData(localePt, 'pt');
 @NgModule({
   declarations: [
     AppComponent,
@@ -106,8 +110,20 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     DataTablesModule.forRoot(),
     SweetAlert2Module.forRoot(),
     FornecedorModule,
+    ProdutoModule,
   ],
-  providers: [AuthService, UserRoleService],
+  providers: [
+    {
+      provide: LOCALE_ID,
+      useValue: 'pt',
+    },
+    {
+      provide: DEFAULT_CURRENCY_CODE,
+      useValue: 'BRL',
+    },
+    AuthService,
+    UserRoleService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
