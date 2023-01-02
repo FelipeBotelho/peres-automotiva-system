@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProdutoAppComponent } from './produto.app.component';
 import { ListaComponent } from './lista/lista.component';
 import { ProdutoGuard } from './services/produto.guard';
+import { NovoComponent } from './novo/novo.component';
 // import { NovoComponent } from './novo/novo.component';
 // import { EditarComponent } from './editar/editar.component';
 // import { DetalhesComponent } from './detalhes/detalhes.component';
@@ -20,13 +21,13 @@ const produtoRouterConfig: Routes = [
         component: ListaComponent,
         canActivate: [ProdutoGuard],
       },
-      // {
-      //   path: 'adicionar-novo',
-      //   component: NovoComponent,
-      //   canDeactivate: [ProdutoGuard],
-      //   canActivate: [ProdutoGuard],
-      //   data: [{ claim: { nome: 'Produto', valor: 'Adicionar' } }],
-      // },
+      {
+        path: 'adicionar-novo',
+        component: NovoComponent,
+        canDeactivate: [ProdutoGuard],
+        canActivate: [ProdutoGuard],
+        data: [{ claim: { nome: 'Vendedor' } }],
+      },
       // {
       //   path: 'editar/:id',
       //   component: EditarComponent,

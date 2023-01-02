@@ -11,6 +11,7 @@ import {
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
 import { ToastrService } from 'ngx-toastr';
+import { commonSimpleType } from 'src/app/shared/types/common.types';
 
 @Injectable()
 export class ProdutoService extends BaseService {
@@ -37,6 +38,32 @@ export class ProdutoService extends BaseService {
         )
       )
       .pipe(catchError(super.serviceError));
+  }
+
+  obterMarcas(): Observable<commonSimpleType[]> {
+    return this.db
+      .collection('/marca')
+      .valueChanges({ idField: 'id' })
+      .pipe(
+        map((data) => {
+          return data.map((dado: any) => {
+            return { id: dado.id, nome: dado.nome };
+          });
+        })
+      );
+  }
+
+  obterCategorias(): Observable<commonSimpleType[]> {
+    return this.db
+      .collection('/categoria')
+      .valueChanges({ idField: 'id' })
+      .pipe(
+        map((data) => {
+          return data.map((dado: any) => {
+            return { id: dado.id, nome: dado.nome };
+          });
+        })
+      );
   }
 
   excluirProduto(id: string) {

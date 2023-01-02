@@ -12,6 +12,7 @@ import {
   AngularFirestoreCollection,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
+import { commonSimpleType } from 'src/app/shared/types/common.types';
 
 @Injectable()
 export class FornecedorService extends BaseService {
@@ -35,6 +36,15 @@ export class FornecedorService extends BaseService {
         )
       )
       .pipe(catchError(super.serviceError));
+  }
+  obterTodosSimples(): Observable<commonSimpleType[]> {
+    return this.fornecedorRef.valueChanges({ idField: 'id' }).pipe(
+      map((data) => {
+        return data.map((dado) => {
+          return { id: dado.id, nome: dado.nome };
+        });
+      })
+    );
   }
 
   obterPorId(id: string): Observable<any> {

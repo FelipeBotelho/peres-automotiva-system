@@ -24,12 +24,13 @@ import { NgxMaskModule } from 'ngx-mask';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ToastrModule } from 'ngx-toastr';
 import { DataTablesModule } from 'angular-datatables';
+import { NovoComponent } from './novo/novo.component';
 
 @NgModule({
   declarations: [
     ProdutoAppComponent,
     ListaComponent,
-    // NovoComponent,
+    NovoComponent,
     // EditarComponent,
     // ExcluirComponent,
     // DetalhesComponent,

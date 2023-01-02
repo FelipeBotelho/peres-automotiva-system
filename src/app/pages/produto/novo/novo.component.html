@@ -1,0 +1,128 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Produtos</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <span routerLink="/" class="pointer">Home</span>
+        </li>
+        <li class="breadcrumb-item">Administrativo</li>
+        <li class="breadcrumb-item">Produtos</li>
+        <li class="breadcrumb-item active">Novo</li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Novo Fornecedor</h5>
+          <div class="row m-2">
+            <form
+              novalidate="novalidate"
+              (ngSubmit)="adicionarProduto()"
+              [formGroup]="produtoForm"
+              style="display: contents"
+            >
+              <div class="col-12 mb-3" style="padding: 0">
+                <div class="alert alert-danger" *ngIf="errors.length > 0">
+                  <h3 id="msgRetorno">Opa! Alguma coisa não deu certo:</h3>
+                  <ul>
+                    <li *ngFor="let error of errors">{{ error }}</li>
+                  </ul>
+                </div>
+                <div class="text-left mb-1">
+                  <h5>Dados do Produto</h5>
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                    <label class="form-label">Nome</label>
+                    <div>
+                      <input
+                        class="form-control"
+                        id="nome"
+                        type="text"
+                        placeholder="Nome (requerido)"
+                        formControlName="nome"
+                        [ngClass]="{ 'is-invalid': displayMessage['nome'] }"
+                      />
+                      <span class="text-danger" *ngIf="displayMessage['nome']">
+                        <p [innerHTML]="displayMessage['nome']"></p>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-3">
+                    <label class="form-label">Código</label>
+                    <div>
+                      <input
+                        class="form-control"
+                        id="codigo"
+                        type="text"
+                        placeholder="Código do Produto"
+                        formControlName="codigo"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-group col-3">
+                    <label class="form-label">Valor R$</label>
+                    <div>
+                      <input
+                        class="form-control"
+                        id="valor"
+                        type="text"
+                        currencyMask
+                        [options]="{
+                          prefix: 'R$ ',
+                          thousands: '.',
+                          decimal: ',',
+                          allowNegative: false
+                        }"
+                        placeholder="Valor do Produto (Requerido)"
+                        formControlName="valor"
+                        [ngClass]="{ 'is-invalid': displayMessage['valor'] }"
+                      />
+                      <span class="text-danger" *ngIf="displayMessage['valor']">
+                        <p [innerHTML]="displayMessage['valor']"></p>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-3 form-check">
+                    <label class="form-check-label" for="flexSwitchCheckDefault"
+                      >Ativo</label
+                    >
+                    <div class="form-check form-switch">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="flexSwitchCheckDefault"
+                        formControlName="ativo"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="col-12"
+                style="display: flex; justify-content: end; gap: 1rem"
+              >
+                <a
+                  class="btn btn-info"
+                  [routerLink]="['/fornecedores/listar-todos']"
+                  >Voltar</a
+                >
+                <input
+                  type="submit"
+                  value="Cadastrar"
+                  class="btn btn-primary"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

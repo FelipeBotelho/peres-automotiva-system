@@ -9,6 +9,7 @@ import {
 // import { NovoComponent } from '../novo/novo.component';
 import { BaseGuard } from '../../../shared/guard/base.guard';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { NovoComponent } from '../novo/novo.component';
 
 @Injectable() //, CanDeactivate<NovoComponent>
 export class ProdutoGuard extends BaseGuard implements CanActivate {
@@ -19,14 +20,14 @@ export class ProdutoGuard extends BaseGuard implements CanActivate {
     super(router, authService);
   }
 
-  //   canDeactivate(component: NovoComponent) {
-  //     if (component.mudancasNaoSalvas) {
-  //       return window.confirm(
-  //         'Tem certeza que deseja abandonar o preenchimento do formulario?'
-  //       );
-  //     }
-  //     return true;
-  //   }
+  canDeactivate(component: NovoComponent) {
+    if (component.mudancasNaoSalvas) {
+      return window.confirm(
+        'Tem certeza que deseja abandonar o preenchimento do formulario?'
+      );
+    }
+    return true;
+  }
 
   canActivate(routeAc: ActivatedRouteSnapshot) {
     return super.validarClaims(routeAc);
