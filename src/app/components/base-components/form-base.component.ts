@@ -26,8 +26,20 @@ export abstract class FormBaseComponent {
     formInputElements: ElementRef[],
     formGroup: FormGroup
   ) {
+    let a = formInputElements.map((formControl) => {
+      formControl.nativeElement;
+    });
     let controlBlurs: Observable<any>[] = formInputElements.map(
-      (formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur')
+      (formControl: ElementRef) => {
+        if (formControl.nativeElement.classList.contains('ng-select')) {
+          return fromEvent(
+            formControl.nativeElement.children[0].children[0].children[2]
+              .children[0],
+            'blur'
+          );
+        }
+        return fromEvent(formControl.nativeElement, 'blur');
+      }
     );
 
     merge(...controlBlurs).subscribe(() => {

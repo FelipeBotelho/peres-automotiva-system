@@ -20,15 +20,6 @@ export class ProdutoGuard extends BaseGuard implements CanActivate {
     super(router, authService);
   }
 
-  canDeactivate(component: NovoComponent) {
-    if (component.mudancasNaoSalvas) {
-      return window.confirm(
-        'Tem certeza que deseja abandonar o preenchimento do formulario?'
-      );
-    }
-    return true;
-  }
-
   canActivate(routeAc: ActivatedRouteSnapshot) {
     return super.validarClaims(routeAc);
   }

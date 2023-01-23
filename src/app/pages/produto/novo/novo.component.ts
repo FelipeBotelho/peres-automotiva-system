@@ -15,6 +15,11 @@ import { ProdutoService } from '../services/produto.service';
 import { FormBaseComponent } from '../../../components/base-components/form-base.component';
 import { FornecedorService } from '../../fornecedor/services/fornecedor.service';
 import { commonSimpleType } from 'src/app/shared/types/common.types';
+import {
+  Dimensions,
+  ImageCroppedEvent,
+  ImageTransform,
+} from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-novo',
@@ -33,10 +38,17 @@ export class NovoComponent extends FormBaseComponent implements OnInit {
   categorias: commonSimpleType[] = [];
   formResult: string = '';
 
+  imageChangedEvent: any = '';
+  imagemNome!: string;
+  uploadedImage: any = null;
+  isAddingCategoria: boolean = false;
+  cate: string = '';
+  isAddingMarca: boolean = false;
+  isAddingFornecedor: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private produtoService: ProdutoService,
-    private router: Router,
     private toastr: ToastrService,
     private fornecedorService: FornecedorService
   ) {
@@ -46,13 +58,13 @@ export class NovoComponent extends FormBaseComponent implements OnInit {
       nome: {
         required: 'Informe o Nome',
       },
-      idMarca: {
+      marca: {
         required: 'Informe a Marca',
       },
-      idFornecedor: {
+      fornecedor: {
         required: 'Informe o Fornecedor',
       },
-      idCategoria: {
+      categoria: {
         required: 'Informe a Categoria do Produto',
       },
 
@@ -61,6 +73,12 @@ export class NovoComponent extends FormBaseComponent implements OnInit {
       },
       ativo: {
         required: 'Informe se o produto está ativo',
+      },
+      imagem: {
+        required: 'Selecione uma imagem para o produto',
+      },
+      quantidade: {
+        required: 'Informe a quantidade de itens',
       },
     };
 
@@ -84,12 +102,14 @@ export class NovoComponent extends FormBaseComponent implements OnInit {
       nome: ['', [Validators.required]],
       codigo: [''],
       descricao: [''],
-      idMarca: ['', [Validators.required]],
-      idFornecedor: ['', [Validators.required]],
-      idCategoria: ['', [Validators.required]],
+      marca: ['', [Validators.required]],
+      fornecedor: ['', [Validators.required]],
+      categoria: ['', [Validators.required]],
       imagem: [''],
       valor: ['', [Validators.required]],
-      ativo: ['', [Validators.required]],
+      ativo: [true, [Validators.required]],
+      quantidade:['',[Validators.required]],
+      localizacao:['']
     });
   }
 
@@ -103,47 +123,47 @@ export class NovoComponent extends FormBaseComponent implements OnInit {
   adicionarProduto() {
     if (this.produtoForm.dirty && this.produtoForm.valid) {
       this.produto = Object.assign({}, this.produto, this.produtoForm.value);
+      let objToSend: any = {};
+      if (this.imageChangedEvent) {
+        objToSend = {
+          produto: this.produto,
+          imagem: this.imageChangedEvent,
+          nomeImagem: this.imagemNome,
+        };
+      } else {
+        this.toastr.error('Selecione uma imagem para o produto');
+        return;
+      }
 
-      this.formResult = JSON.stringify(this.produto);
-
-      this.produtoService.novoProduto(this.produto).subscribe({
-        next: (sucesso: any = true) => {
-          debugger;
-          this.processarSucesso(sucesso);
-        },
-        error: (falha) => {
-          this.processarFalha(falha);
-        },
-      });
+      this.produtoService.novoProduto(objToSend);
     } else {
       this.toastr.warning('Informe todos os campos obrigatórios!');
     }
   }
 
-  processarSucesso(response: any) {
-    this.produtoForm.reset();
-    this.errors = [];
-
-    this.mudancasNaoSalvas = false;
-
-    let toast = this.toastr.success(
-      'Fornecedor cadastrado com sucesso!',
-      'Sucesso!',
-      {
-        timeOut: 1000,
-      }
-    );
-    if (toast) {
-      toast.onHidden.subscribe(() => {
-        this.router.navigate(['/fornecedores/listar-todos']);
-      });
-    }
+  adicionarCategoria() {
+    this.isAddingCategoria = true;
   }
 
-  processarFalha(fail: any) {
-    this.errors = fail.error.errors;
-    this.toastr.error('Ocorreu um erro!', 'Opa :(', {
-      timeOut: 1000,
+  concluirAddCategoria() {
+    this.produtoService.addCategoria(this.cate).subscribe({
+      next: (data) => {
+        this.toastr.success('Categoria Incluida com Sucesso!');
+        this.isAddingCategoria = false;
+        this.cate = "";
+      },
     });
+  }
+
+  fileChangeEvent(event: any): void {
+    this.imageChangedEvent = event.currentTarget.files[0];
+    if (FileReader && this.imageChangedEvent) {
+      const fr = new FileReader();
+      fr.onload = () => {
+        this.uploadedImage = fr.result;
+      };
+      fr.readAsDataURL(this.imageChangedEvent);
+    }
+    this.imagemNome = event.currentTarget.files[0].name;
   }
 }

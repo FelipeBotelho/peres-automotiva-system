@@ -26,10 +26,10 @@ export class ListaComponent implements OnInit, OnDestroy {
   ) {
     this.isLoaded = false;
   }
-  excluir(idProduto: any) {
+  excluir(idProduto: any, nomeImagem: string) {
     this.dtTrigger.unsubscribe();
     //Remover Estoque e produto
-    const remove = this.produtoService.excluirProduto(idProduto);
+    const remove = this.produtoService.excluirProduto(idProduto, nomeImagem);
     this.reloadComponent();
   }
 

@@ -25,6 +25,9 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ToastrModule } from 'ngx-toastr';
 import { DataTablesModule } from 'angular-datatables';
 import { NovoComponent } from './novo/novo.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ProdutoResolve } from './services/produto.resolve';
+import { DetalhesComponent } from './detalhes/detalhes.component';
 
 @NgModule({
   declarations: [
@@ -33,11 +36,12 @@ import { NovoComponent } from './novo/novo.component';
     NovoComponent,
     // EditarComponent,
     // ExcluirComponent,
-    // DetalhesComponent,
+    DetalhesComponent,
   ],
   imports: [
     CommonModule,
     TextMaskModule,
+    NgSelectModule,
     NgxSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
@@ -50,6 +54,6 @@ import { NovoComponent } from './novo/novo.component';
     CurrencyMaskModule,
     ProdutoRoutingModule,
   ],
-  providers: [ProdutoService, ProdutoGuard],
+  providers: [ProdutoService, ProdutoGuard, ProdutoResolve],
 })
 export class ProdutoModule {}

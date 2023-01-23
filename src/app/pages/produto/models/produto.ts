@@ -15,7 +15,8 @@ export class Produto {
     id: string;
     nome: string;
   };
-  imagem?: string;
+  imagem!: string;
+  imagemNome!: string;
   valor!: number;
   dataCadastro!: Date;
   dataAtualizacao!: Date;

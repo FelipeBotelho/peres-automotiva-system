@@ -54,6 +54,8 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ProdutoModule } from './pages/produto/produto.module';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { EstoqueModule } from './pages/estoque/estoque.module';
 
 registerLocaleData(localePt, 'pt');
 @NgModule({
@@ -103,7 +105,7 @@ registerLocaleData(localePt, 'pt');
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    AngularFirestoreModule,
+    AngularFireStorageModule,
     AngularFireModule,
     NgxMaskModule.forRoot(),
     ToastrModule.forRoot(),
@@ -111,6 +113,7 @@ registerLocaleData(localePt, 'pt');
     SweetAlert2Module.forRoot(),
     FornecedorModule,
     ProdutoModule,
+    EstoqueModule,
   ],
   providers: [
     {

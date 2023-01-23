@@ -16,7 +16,7 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Novo Fornecedor</h5>
+          <h5 class="card-title">Novo Produto</h5>
           <div class="row m-2">
             <form
               novalidate="novalidate"
@@ -103,6 +103,137 @@
                     </div>
                   </div>
                 </div>
+                <div class="row mt-3">
+                  <div class="form-group col-3">
+                    <label class="form-label">Categoria</label>
+
+                    <ng-select
+                      id="categoria"
+                      [items]="categorias"
+                      formControlName="categoria"
+                      class="custom"
+                      bindLabel="nome"
+                      class="custom"
+                      notFoundText="Nenhum Item Encontrado"
+                      [ngClass]="{ 'is-invalid': displayMessage['categoria'] }"
+                    >
+                    </ng-select>
+                    <span
+                      class="text-danger"
+                      *ngIf="displayMessage['categoria']"
+                    >
+                      <p [innerHTML]="displayMessage['categoria']"></p>
+                    </span>
+                  </div>
+                  <div class="form-group col-3">
+                    <label class="form-label">Marca</label>
+                    <ng-select
+                      id="marca"
+                      [items]="marcas"
+                      formControlName="marca"
+                      bindLabel="nome"
+                      class="custom"
+                      notFoundText="Nenhum Item Encontrado"
+                      [ngClass]="{ 'is-invalid': displayMessage['marca'] }"
+                    >
+                    </ng-select>
+                    <span class="text-danger" *ngIf="displayMessage['marca']">
+                      <p [innerHTML]="displayMessage['marca']"></p>
+                    </span>
+                  </div>
+                  <div class="form-group col-3">
+                    <label class="form-label">Fornecedor</label>
+                    <ng-select
+                      id="fornecedor"
+                      [items]="fornecedores"
+                      formControlName="fornecedor"
+                      class="custom"
+                      bindLabel="nome"
+                      class="custom"
+                      notFoundText="Nenhum Item Encontrado"
+                      [ngClass]="{ 'is-invalid': displayMessage['fornecedor'] }"
+                    >
+                    </ng-select>
+                    <span
+                      class="text-danger"
+                      *ngIf="displayMessage['fornecedor']"
+                    >
+                      <p [innerHTML]="displayMessage['fornecedor']"></p>
+                    </span>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="form-group col-9">
+                    <label class="form-label">Descrição</label>
+                    <div>
+                      <textarea
+                        class="form-control"
+                        id="descricao"
+                        placeholder="Descrição do Produto"
+                        formControlName="descricao"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="form-group col-4">
+                    <label class="form-label">Imagem</label>
+                    <div class="col-sm-12">
+                      <input
+                        class="form-control"
+                        type="file"
+                        id="formFile"
+                        formControlName="imagem"
+                        accept="image/*"
+                        (input)="fileChangeEvent($event)"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group col-2">
+                    <label class="form-label">Quantidade</label>
+                    <div>
+                      <input
+                        class="form-control"
+                        id="qtd"
+                        type="number"
+                        placeholder="Quantidade"
+                        formControlName="quantidade"
+                        [ngClass]="{
+                          'is-invalid': displayMessage['quantidade']
+                        }"
+                      />
+                      <span
+                        class="text-danger"
+                        *ngIf="displayMessage['quantidade']"
+                      >
+                        <p [innerHTML]="displayMessage['quantidade']"></p>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group col-3">
+                    <label class="form-label">Localização</label>
+                    <div>
+                      <input
+                        class="form-control"
+                        id="localizacao"
+                        type="text"
+                        placeholder="Localizacao"
+                        formControlName="localizacao"
+                        [specialCharacters]="['C', 'P', 'E','-','_']"
+                        [showMaskTyped]="true"
+                        mask="C-00_P-00_E-00"
+                        [ngClass]="{
+                          'is-invalid': displayMessage['localizacao']
+                        }"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-6" *ngIf="imageChangedEvent">
+                    <img class="upload-image" [src]="uploadedImage" />
+                  </div>
+                </div>
               </div>
               <div
                 class="col-12"
@@ -110,7 +241,7 @@
               >
                 <a
                   class="btn btn-info"
-                  [routerLink]="['/fornecedores/listar-todos']"
+                  [routerLink]="['/produtos/listar-todos']"
                   >Voltar</a
                 >
                 <input

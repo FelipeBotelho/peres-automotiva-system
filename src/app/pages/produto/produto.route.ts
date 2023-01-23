@@ -4,6 +4,9 @@ import { ProdutoAppComponent } from './produto.app.component';
 import { ListaComponent } from './lista/lista.component';
 import { ProdutoGuard } from './services/produto.guard';
 import { NovoComponent } from './novo/novo.component';
+import { DetalhesComponent } from './detalhes/detalhes.component';
+import { ProdutoResolve } from './services/produto.resolve';
+import { EstoqueResolve } from '../estoque/services/estoque.resolve';
 // import { NovoComponent } from './novo/novo.component';
 // import { EditarComponent } from './editar/editar.component';
 // import { DetalhesComponent } from './detalhes/detalhes.component';
@@ -24,7 +27,6 @@ const produtoRouterConfig: Routes = [
       {
         path: 'adicionar-novo',
         component: NovoComponent,
-        canDeactivate: [ProdutoGuard],
         canActivate: [ProdutoGuard],
         data: [{ claim: { nome: 'Vendedor' } }],
       },
@@ -37,13 +39,14 @@ const produtoRouterConfig: Routes = [
       //     produto: ProdutoResolve,
       //   },
       // },
-      // {
-      //   path: 'detalhes/:id',
-      //   component: DetalhesComponent,
-      //   resolve: {
-      //     produto: ProdutoResolve,
-      //   },
-      // },
+      {
+        path: 'detalhes/:id',
+        component: DetalhesComponent,
+        resolve: {
+          produto: ProdutoResolve,
+          estoque: EstoqueResolve
+        },
+      },
       // {
       //   path: 'excluir/:id',
       //   component: ExcluirComponent,

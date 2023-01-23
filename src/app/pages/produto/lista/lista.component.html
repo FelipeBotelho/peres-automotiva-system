@@ -31,36 +31,36 @@
             <thead>
               <tr>
                 <th></th>
-                <th scope="col">Nome</th>
-                <th scope="col">Categoria</th>
-                <th scope="col">Marca</th>
-                <th scope="col">Valor</th>
-                <th scope="col">Ativo</th>
-                <th scope="col">Ações</th>
+                <th class="text-center" scope="col">Nome</th>
+                <th class="text-center" scope="col">Categoria</th>
+                <th class="text-center" scope="col">Marca</th>
+                <th class="text-center" scope="col">Valor</th>
+                <th class="text-center" scope="col">Ativo</th>
+                <th class="text-center" scope="col">Ações</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let produto of produtos; let last = last">
-                <td>
+                <td class="text-center">
                   <img
                     src="{{ produto.imagem }}"
                     style="width: 70px; height: 70px"
                   />
                 </td>
-                <td>
+                <td class="text-center">
                   {{ produto.nome }}
                 </td>
-                <td>
+                <td class="text-center">
                   {{ produto?.categoria?.nome }}
                 </td>
-                <td>
+                <td class="text-center">
                   {{ produto?.marca?.nome }}
                 </td>
-                <td>
+                <td class="text-center">
                   {{ produto.valor | currency }}
                 </td>
-                <td>
-                  <div class="form-check form-switch">
+                <td class="text-center">
+                  <div class="form-check form-switch d-flex justify-content-center">
                     <input
                       [checked]="produto.ativo"
                       class="form-check-input"
@@ -70,7 +70,7 @@
                     />
                   </div>
                 </td>
-                <td>
+                <td class="text-center">
                   <a
                     class="btn btn-info"
                     [routerLink]="['/produtos/detalhes', produto.id]"
@@ -93,7 +93,7 @@
                     icon="question"
                     [showCancelButton]="true"
                     [focusCancel]="true"
-                    (confirm)="excluir(produto.id)"
+                    (confirm)="excluir(produto.id, produto.imagemNome)"
                   >
                   </swal>
                 </td>
