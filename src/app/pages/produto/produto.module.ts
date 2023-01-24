@@ -28,13 +28,14 @@ import { NovoComponent } from './novo/novo.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ProdutoResolve } from './services/produto.resolve';
 import { DetalhesComponent } from './detalhes/detalhes.component';
+import { EditarComponent } from './editar/editar.component';
 
 @NgModule({
   declarations: [
     ProdutoAppComponent,
     ListaComponent,
     NovoComponent,
-    // EditarComponent,
+    EditarComponent,
     // ExcluirComponent,
     DetalhesComponent,
   ],

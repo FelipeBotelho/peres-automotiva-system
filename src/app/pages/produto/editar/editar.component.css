@@ -1,0 +1,31 @@
+a {
+  color: #fff;
+}
+a:hover {
+  color: #fff;
+}
+.ng-select.custom {
+  border: 0px !important;
+  border-radius: 0 !important;
+}
+
+.ng-select.custom ::ng-deep .ng-select-container {
+  min-height: 0px !important;
+}
+
+.ng-value {
+  display: none !important;
+}
+
+.select-isInvalid {
+  border-color: red;
+}
+
+.ng-select.custom.ng-invalid.is-invalid ::ng-deep .ng-select-container {
+  border: 1px solid red;
+}
+
+.upload-image {
+  max-width: 500px;
+  border: 1px solid #ddd;
+}

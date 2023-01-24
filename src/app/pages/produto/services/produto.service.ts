@@ -143,7 +143,8 @@ export class ProdutoService extends BaseService {
               .add(produto.produto)
               .then((data) => {
                 this.db
-                  .collection('/estoque').doc(data.id)
+                  .collection('/estoque')
+                  .doc(data.id)
                   .set({
                     idProduto: data.id,
                     localizacao: localizacao,
@@ -174,11 +175,80 @@ export class ProdutoService extends BaseService {
       .subscribe();
   }
 
-  addCategoria(cat:string){
-    return defer(() => from(this.db.collection("/categoria").add({nome: cat})));
+  addCategoria(cat: string) {
+    return defer(() =>
+      from(this.db.collection('/categoria').add({ nome: cat }))
+    );
   }
 
-  atualizarProduto(id: string, produto: Produto): Observable<any> {
+  atualizarProduto(id: string, produto: any) {
+    if (produto.imagem) {
+      produto.produto.imagem = produto.nomeImagem || '';
+    }
+    const basePath = '/uploads';
+
+    const filePath = `${basePath}/${produto.nomeImagem}`;
+    const storageRef = this.storage.ref(filePath);
+    const uploadTask = this.storage.upload(filePath, produto.imagem);
+
+    if (produto.imagem) {
+      return uploadTask
+        .snapshotChanges()
+        .pipe(
+          finalize(() => {
+            storageRef.getDownloadURL().subscribe((downloadURL) => {
+              produto.produto.imagemNome = produto.produto.imagem;
+              produto.produto.imagem = downloadURL;
+              this.db
+                .doc('produto/' + id)
+                .update(produto.produto)
+                .then((data) => {
+                  const storageRef = this.storage.ref('/uploads');
+                  storageRef.child(produto.oldImage).delete().subscribe();
+                  console.log(data);
+                  let toast = this.toast.success(
+                    'produto atualizado com sucesso!',
+                    'Sucesso!',
+                    {
+                      timeOut: 1000,
+                    }
+                  );
+                  if (toast) {
+                    toast.onHidden.subscribe(() => {
+                      this.router.navigate(['/produtos/listar-todos']);
+                    });
+                  }
+                })
+                .catch((error) => {
+                  this.toast.error(error.message);
+                });
+            });
+          })
+        )
+        .subscribe();
+    } else {
+      this.db
+        .doc('/produto/' + id)
+        .update(produto.produto)
+        .then((data) => {
+          let toast = this.toast.success(
+            'produto atualizado com sucesso!',
+            'Sucesso!',
+            {
+              timeOut: 1000,
+            }
+          );
+          if (toast) {
+            toast.onHidden.subscribe(() => {
+              this.router.navigate(['/produtos/listar-todos']);
+            });
+          }
+        })
+        .catch((error) => {
+          this.toast.error(error.message);
+        });
+    }
+
     return defer(() => from(this.db.doc('/produto/' + id).update(produto)));
   }
 }

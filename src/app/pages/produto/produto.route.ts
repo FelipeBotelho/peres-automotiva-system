@@ -7,6 +7,7 @@ import { NovoComponent } from './novo/novo.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 import { ProdutoResolve } from './services/produto.resolve';
 import { EstoqueResolve } from '../estoque/services/estoque.resolve';
+import { EditarComponent } from './editar/editar.component';
 // import { NovoComponent } from './novo/novo.component';
 // import { EditarComponent } from './editar/editar.component';
 // import { DetalhesComponent } from './detalhes/detalhes.component';
@@ -30,15 +31,15 @@ const produtoRouterConfig: Routes = [
         canActivate: [ProdutoGuard],
         data: [{ claim: { nome: 'Vendedor' } }],
       },
-      // {
-      //   path: 'editar/:id',
-      //   component: EditarComponent,
-      //   canActivate: [ProdutoGuard],
-      //   data: [{ claim: { nome: 'Produto', valor: 'Atualizar' } }],
-      //   resolve: {
-      //     produto: ProdutoResolve,
-      //   },
-      // },
+      {
+        path: 'editar/:id',
+        component: EditarComponent,
+        canActivate: [ProdutoGuard],
+        data: [{ claim: { nome: 'Vendedor' } }],
+        resolve: {
+          produto: ProdutoResolve,
+        },
+      },
       {
         path: 'detalhes/:id',
         component: DetalhesComponent,
