@@ -47,9 +47,9 @@ export class EstoqueService extends BaseService {
   //   return defer(() => from(this.fornecedorRef.doc(id).delete()));
   // }
 
-  // atualizarFornecedor(id: string, fornecedor: Fornecedor): Observable<any> {
-  //   return defer(() =>
-  //     from(this.db.doc('/fornecedor/' + id).update(fornecedor))
-  //   );
-  // }
+  atualizarEstoque(id: string, estoque: Estoque): Observable<any> {
+    return defer(() =>
+      from(this.db.doc('/estoque/' + id).update(estoque))
+    );
+  }
 }

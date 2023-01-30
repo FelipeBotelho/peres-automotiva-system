@@ -14,10 +14,12 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { EstoqueGuard } from './services/estoque.guard';
 import { EstoqueResolve } from './services/estoque.resolve';
 import { EstoqueService } from './services/estoque.service';
+import { DetalhesComponent } from './detalhes/detalhes.component';
 
 @NgModule({
   declarations: [
     EstoqueAppComponent,
+    DetalhesComponent
   ],
   imports: [
     CommonModule,

@@ -1,13 +1,12 @@
 <main id="main" class="main">
   <div class="pagetitle">
-    <h1>Produtos</h1>
+    <h1>Detalhes de Estoque</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
           <span routerLink="/" class="pointer">Home</span>
         </li>
-        <li class="breadcrumb-item">Administrativo</li>
-        <li class="breadcrumb-item">Fornecedores</li>
+        <li class="breadcrumb-item">Estoque</li>
         <li class="breadcrumb-item active">Detalhes</li>
       </ol>
     </nav>
@@ -90,18 +89,24 @@
               <label class="control-label">Imagem</label>
             </dt>
             <dd class="col-sm-10">
-              <img class="img-responsive" [src]="produto.imagem" alt="produto"/>
+              <img
+                class="img-responsive"
+                style="max-width: 1000px"
+                [src]="produto.imagem"
+                alt="produto"
+              />
             </dd>
           </dl>
           <!-- <lista-produto [produtos]="fornecedor.produtos"></lista-produto> -->
 
           <div class="text-end">
-            <a class="btn btn-info" [routerLink]="['/produtos/listar-todos']"
+            <a class="btn btn-info" [routerLink]="['/']"
               >Voltar</a
             >&nbsp;
             <a
               class="btn btn-primary"
-              [routerLink]="['/produtos/editar', produto.id]"
+              data-bs-toggle="modal"
+              data-bs-target="#basicModalEdit"
               >Editar</a
             >
           </div>
@@ -110,3 +115,61 @@
     </div>
   </section>
 </main>
+
+<div class="modal fade" id="basicModalEdit" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Atualizar Estoque</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body d-flex">
+        <div class="row" style="width: 100%">
+          <div class="form-group col-12">
+            <label>Quantidade em Estoque</label>
+            <div>
+              <input
+                class="form-control"
+                type="number"
+                maxlength="3"
+                [(ngModel)]="estoque.quantidade"
+              />
+            </div>
+          </div>
+          <div class="form-group col-12 mt-3">
+            <label class="form-label">Localização do Item</label>
+            <div>
+              <input
+                class="form-control"
+                type="text"
+                id="localizacao"
+                [(ngModel)]="estoque.localizacao"
+                [specialCharacters]="['C', 'P', 'E', '-', '_']"
+                [showMaskTyped]="true"
+                mask="C-00_P-00_E-00"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          (click)="alterarItemEstoque()"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+        >
+          Alterar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

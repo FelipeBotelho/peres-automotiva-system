@@ -52,10 +52,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { DataTablesModule } from 'angular-datatables';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ProdutoModule } from './pages/produto/produto.module';
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { EstoqueModule } from './pages/estoque/estoque.module';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 registerLocaleData(localePt, 'pt');
 @NgModule({
@@ -102,6 +104,10 @@ registerLocaleData(localePt, 'pt');
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
+    FormsModule,
+    CommonModule,
+    ReactiveFormsModule,
+    NgSelectModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,

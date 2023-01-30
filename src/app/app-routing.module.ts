@@ -57,6 +57,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'estoque',
+    loadChildren: () =>
+      import('./pages/estoque/estoque.module').then(
+        (m) => m.EstoqueModule
+      ),
+  },
+  {
     path: 'produtos',
     loadChildren: () =>
       import('./pages/produto/produto.module').then((m) => m.ProdutoModule),
