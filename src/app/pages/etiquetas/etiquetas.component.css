@@ -1,0 +1,15 @@
+a {
+  color: #fff;
+}
+a:hover {
+  color: #fff;
+}
+.desc-etiqueta p{
+  margin:0;
+}
+.etiqueta{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc
+}

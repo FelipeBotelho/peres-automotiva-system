@@ -58,6 +58,9 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { EstoqueModule } from './pages/estoque/estoque.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { QRCodeModule } from 'angularx-qrcode';
+import { EtiquetasComponent } from './pages/etiquetas/etiquetas.component';
+import { EtiquetasGuard } from './pages/etiquetas/etiquetas.guard';
 
 registerLocaleData(localePt, 'pt');
 @NgModule({
@@ -67,6 +70,7 @@ registerLocaleData(localePt, 'pt');
     FooterComponent,
     SidebarComponent,
     DashboardComponent,
+    EtiquetasComponent,
     AlertsComponent,
     AccordionComponent,
     BadgesComponent,
@@ -120,6 +124,7 @@ registerLocaleData(localePt, 'pt');
     FornecedorModule,
     ProdutoModule,
     EstoqueModule,
+    QRCodeModule
   ],
   providers: [
     {
@@ -132,6 +137,7 @@ registerLocaleData(localePt, 'pt');
     },
     AuthService,
     UserRoleService,
+    EtiquetasGuard
   ],
   bootstrap: [AppComponent],
 })

@@ -1,0 +1,218 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Gerar Etiquetas</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <span routerLink="/" class="pointer">Home</span>
+        </li>
+        <li class="breadcrumb-item">
+          <span>Administração</span>
+        </li>
+        <li class="breadcrumb-item active">Gerar Etiquetas</li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Pesquisar Peças</h5>
+          <form
+            novalidate="novalidate"
+            (ngSubmit)="pesquisar()"
+            [formGroup]="produtoForm"
+            style="display: contents"
+          >
+            <div class="d-flex align-items-start">
+              <div
+                class="nav flex-column nav-pills me-3"
+                id="v-pills-tab"
+                role="tablist"
+                aria-orientation="vertical"
+              >
+                <button
+                  class="nav-link active"
+                  id="v-pills-home-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#v-pills-home"
+                  type="button"
+                  role="tab"
+                  aria-controls="v-pills-home"
+                  aria-selected="true"
+                >
+                  Filtros
+                </button>
+                <button
+                  class="nav-link"
+                  id="v-pills-profile-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#v-pills-profile"
+                  type="button"
+                  role="tab"
+                  aria-controls="v-pills-profile"
+                  aria-selected="false"
+                >
+                  Palavras Chave
+                </button>
+              </div>
+              <div
+                class="tab-content"
+                id="v-pills-tabContent"
+                style="width: 100%"
+              >
+                <div
+                  class="tab-pane fade show active"
+                  id="v-pills-home"
+                  role="tabpanel"
+                  aria-labelledby="v-pills-home-tab"
+                >
+                  <div class="row mt-3">
+                    <div class="col-6">
+                      <label class="form-label">Nome</label>
+                      <div>
+                        <input
+                          class="form-control"
+                          id="nome"
+                          type="text"
+                          placeholder="Nome (requerido)"
+                          formControlName="nome"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="form-group col-6">
+                      <label class="form-label">Código</label>
+                      <div>
+                        <input
+                          class="form-control"
+                          id="codigo"
+                          type="text"
+                          placeholder="Código do Produto"
+                          formControlName="codigo"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="form-group col-4">
+                      <label class="form-label">Categoria</label>
+
+                      <ng-select
+                        id="categoria"
+                        [items]="categorias"
+                        formControlName="categoria"
+                        class="custom"
+                        bindLabel="nome"
+                        class="custom"
+                        notFoundText="Nenhum Item Encontrado"
+                      >
+                      </ng-select>
+                    </div>
+                    <div class="form-group col-4">
+                      <label class="form-label">Marca</label>
+                      <ng-select
+                        id="marca"
+                        [items]="marcas"
+                        formControlName="marca"
+                        bindLabel="nome"
+                        class="custom"
+                        notFoundText="Nenhum Item Encontrado"
+                      >
+                      </ng-select>
+                    </div>
+                    <div class="form-group col-4">
+                      <label class="form-label">Fornecedor</label>
+                      <ng-select
+                        id="fornecedor"
+                        [items]="fornecedores"
+                        formControlName="fornecedor"
+                        class="custom"
+                        bindLabel="nome"
+                        class="custom"
+                        notFoundText="Nenhum Item Encontrado"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="tab-pane fade"
+                  id="v-pills-profile"
+                  role="tabpanel"
+                  aria-labelledby="v-pills-profile-tab"
+                >
+                  <div class="row mt-3">
+                    <div class="form-group col-12">
+                      <label class="form-label">Palavras Chave</label>
+                      <div>
+                        <input
+                          class="form-control"
+                          type="text"
+                          id="descricao"
+                          placeholder="Entre com palavras chave da Peça"
+                          formControlName="descricao"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div
+                class="col-12"
+                style="display: flex; justify-content: end; gap: 1rem"
+              >
+                <input
+                  type="submit"
+                  value="Pesquisar"
+                  class="btn btn-primary"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div #pdfTable>
+        <div class="card" *ngIf="pecas.length > 0">
+          <div class="card-body">
+            <h5 class="card-title">Etiquetas Geradas</h5>
+            <div id="pdf-area" class="row">
+              <div class="col-2 etiqueta" *ngFor="let e of pecas">
+                <div class="col-6">
+                  <qrcode
+                    [qrdata]="obterLinkQrCode(e.id)"
+                    [width]="100"
+                    [errorCorrectionLevel]="'M'"
+                  ></qrcode>
+                </div>
+                <div class="col-6 desc-etiqueta">
+                  <p>
+                    <strong>{{ e.nome }}</strong>
+                  </p>
+                  <p>{{ e.categoria.nome }}</p>
+                  <p>{{ e.marca.nome }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div
+                class="col-12"
+                style="display: flex; justify-content: end; gap: 1rem"
+              >
+                <input
+                  type="button"
+                  (click)="downloadPDF()"
+                  value="Imprimir Etiquetas"
+                  class="btn btn-primary"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

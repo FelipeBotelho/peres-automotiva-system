@@ -35,12 +35,20 @@ import { UsersProfileComponent } from './pages/users-profile/users-profile.compo
 
 import { AuthGuard } from './shared/guard/auth.guard';
 import { AcessoNegadoComponent } from './pages/acesso-negado/acesso-negado.component';
+import { EtiquetasGuard } from './pages/etiquetas/etiquetas.guard';
+import { EtiquetasComponent } from './pages/etiquetas/etiquetas.component';
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'etiquetas',
+    component: EtiquetasComponent,
+    canActivate: [EtiquetasGuard],
+    data: [{ claim: { nome: 'Vendedor' } }],
   },
   {
     path: 'authentication',
@@ -59,9 +67,7 @@ const routes: Routes = [
   {
     path: 'estoque',
     loadChildren: () =>
-      import('./pages/estoque/estoque.module').then(
-        (m) => m.EstoqueModule
-      ),
+      import('./pages/estoque/estoque.module').then((m) => m.EstoqueModule),
   },
   {
     path: 'produtos',

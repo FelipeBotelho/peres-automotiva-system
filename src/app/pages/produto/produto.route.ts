@@ -23,19 +23,20 @@ const produtoRouterConfig: Routes = [
       {
         path: 'listar-todos',
         component: ListaComponent,
+        data: [{ claim: { nome: 'Admin' } }],
         canActivate: [ProdutoGuard],
       },
       {
         path: 'adicionar-novo',
         component: NovoComponent,
         canActivate: [ProdutoGuard],
-        data: [{ claim: { nome: 'Vendedor' } }],
+        data: [{ claim: { nome: 'Admin' } }],
       },
       {
         path: 'editar/:id',
         component: EditarComponent,
         canActivate: [ProdutoGuard],
-        data: [{ claim: { nome: 'Vendedor' } }],
+        data: [{ claim: { nome: 'Admin' } }],
         resolve: {
           produto: ProdutoResolve,
         },
@@ -43,6 +44,7 @@ const produtoRouterConfig: Routes = [
       {
         path: 'detalhes/:id',
         component: DetalhesComponent,
+        data: [{ claim: { nome: 'Admin' } }],
         resolve: {
           produto: ProdutoResolve,
           estoque: EstoqueResolve
