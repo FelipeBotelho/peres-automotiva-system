@@ -21,13 +21,10 @@ export abstract class BaseGuard {
         if (!role) {
           this.navegarAcessoNegado();
         }
-        let userClaims = role == claim.nome;
-        if (!userClaims) {
-          this.navegarAcessoNegado();
-        }
+       
         let valoresClaim = role!;
 
-        if (!valoresClaim.includes(claim.nome)) {
+        if (!claim.nome.includes(valoresClaim)) {
           this.navegarAcessoNegado();
         }
       }

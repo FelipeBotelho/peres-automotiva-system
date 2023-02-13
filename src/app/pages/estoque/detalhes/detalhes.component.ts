@@ -22,6 +22,7 @@ export class DetalhesComponent {
     private estoqueService: EstoqueService,
     private toastr: ToastrService
   ) {
+    debugger;
     this.produto = this.route.snapshot.data['produto'];
     this.estoque = this.route.snapshot.data['estoque'];
   }

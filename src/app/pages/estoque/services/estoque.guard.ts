@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  ActivatedRouteSnapshot,
   Router,
 } from '@angular/router';
 import { BaseGuard } from '../../../shared/guard/base.guard';
@@ -23,7 +24,7 @@ export class EstoqueGuard extends BaseGuard {
   //   return true;
   // }
 
-  // canActivate(routeAc: ActivatedRouteSnapshot) {
-  //   return super.validarClaims(routeAc);
-  // }
+  canActivate(routeAc: ActivatedRouteSnapshot) {
+    return super.validarClaims(routeAc);
+  }
 }

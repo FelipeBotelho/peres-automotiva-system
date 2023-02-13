@@ -1,36 +1,28 @@
-import { Location } from '@angular/common';
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { commonSimpleType } from 'src/app/shared/types/common.types';
 import { DEFAULT_DATATABLE_CONFIG } from 'src/app/utils/datatable-helper';
-import { Estoque } from '../estoque/models/estoque';
-import { EstoqueService } from '../estoque/services/estoque.service';
-import { FornecedorService } from '../fornecedor/services/fornecedor.service';
-import { Produto } from '../produto/models/produto';
-import { ProdutoService } from '../produto/services/produto.service';
-declare var require: any;
-
-
-import jspdf from 'jspdf';
-import html2canvas from 'html2canvas';
+import { FornecedorService } from '../../fornecedor/services/fornecedor.service';
+import { Produto } from '../../produto/models/produto';
+import { ProdutoService } from '../../produto/services/produto.service';
+import { Estoque } from '../models/estoque';
+import { EstoqueService } from '../services/estoque.service';
 
 @Component({
-  selector: 'app-etiqueta',
-  templateUrl: './etiquetas.component.html',
-  styleUrls: ['./etiquetas.component.css'],
+  selector: 'app-dashboard-listar',
+  templateUrl: './listar.component.html',
+  styleUrls: ['./listar.component.css'],
 })
-export class EtiquetasComponent implements OnInit {
+export class ListaComponent implements OnInit {
   constructor(
     private elementRef: ElementRef,
     private fb: FormBuilder,
     private fornecedorService: FornecedorService,
     private produtoService: ProdutoService,
     private estoqueService: EstoqueService,
-    private toastr: ToastrService,
-    private location: Location
+    private toastr: ToastrService
   ) {}
   pecas: any = [];
   produtoForm!: FormGroup;
@@ -43,15 +35,12 @@ export class EtiquetasComponent implements OnInit {
   locationItem = null;
   qtdItem = null
   selectedItem: any = null;
-  @ViewChild('pdfTable') pdfTable!: ElementRef;
 
   isLoaded: boolean = false;
   dtOptions: DataTables.Settings = DEFAULT_DATATABLE_CONFIG;
   dtTrigger: Subject<any> = new Subject<any>();
 
   ngOnInit(): void {
-    console.log(this.location.path);
-
     this.produtoService.obterTodos().subscribe({
       next: (produtos) => {
         this.produtos = produtos;
@@ -88,10 +77,6 @@ export class EtiquetasComponent implements OnInit {
     this.imageSelected = imagem;
   }
 
-  obterLinkQrCode(id: string){
-    return window.location.origin+'/estoque/detalhes/' +id;
-  }
-
   abrirModalEdit(item: any){
     this.locationItem = item.estoque.localizacao;
     this.qtdItem = item.estoque.quantidade;
@@ -107,31 +92,6 @@ export class EtiquetasComponent implements OnInit {
       }
     });
   }
-
-  async downloadPDF() {
-    let element = document.getElementById("pdf-area");
-
-
-    const dataAtual = new Date();
-
-    let pdf = new jspdf();
-
-   
-
-    const page1 = await html2canvas(element!, {
-      allowTaint: false,
-      useCORS: true,
-      scale:0.7
-
-    });
-
-    let imgDataPage1 = page1.toDataURL("image/png");
-    pdf.addImage(imgDataPage1,'PNG',0,0,0,0);
-    pdf.addPage();
-    pdf.save("etiquetas.pdf");
-
-  }
-
 
   pesquisar() {
     const filtros = this.produtoForm.value;

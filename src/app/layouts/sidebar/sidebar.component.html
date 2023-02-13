@@ -1,11 +1,11 @@
 <aside id="sidebar" class="sidebar">
   <ul class="sidebar-nav" id="sidebar-nav">
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/dashboard">
-        <i class="bi bi-grid"></i> <span>Dashboard</span>
+    <li class="nav-item" *ngIf="isInRole('Admin|Vendedor')">
+      <a class="nav-link" routerLink="/estoque/consultar-estoque">
+        <i class="bi bi-grid"></i> <span>Estoque</span>
       </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="isInRole('Admin')">
       <a
         class="nav-link collapsed"
         data-bs-target="#components-nav"

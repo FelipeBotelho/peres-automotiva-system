@@ -19,19 +19,20 @@ const fornecedorRouterConfig: Routes = [
         path: 'listar-todos',
         component: ListaComponent,
         canActivate: [FornececedorGuard],
+        data: [{ claim: { nome: 'Admin' } }],
       },
       {
         path: 'adicionar-novo',
         component: NovoComponent,
         canDeactivate: [FornececedorGuard],
         canActivate: [FornececedorGuard],
-        data: [{ claim: { nome: 'Vendedor' } }],
+        data: [{ claim: { nome: 'Admin' } }],
       },
       {
         path: 'editar/:id',
         component: EditarComponent,
         canActivate: [FornececedorGuard],
-        data: [{ claim: { nome: 'Vendedor' } }],
+        data: [{ claim: { nome: 'Admin' } }],
         resolve: {
           fornecedor: FornecedorResolve,
         },
@@ -39,6 +40,8 @@ const fornecedorRouterConfig: Routes = [
       {
         path: 'detalhes/:id',
         component: DetalhesComponent,
+        canActivate: [FornececedorGuard],
+        data: [{ claim: { nome: 'Admin' } }],
         resolve: {
           fornecedor: FornecedorResolve,
         },
@@ -47,7 +50,7 @@ const fornecedorRouterConfig: Routes = [
         path: 'excluir/:id',
         component: ExcluirComponent,
         canActivate: [FornececedorGuard],
-        data: [{ claim: { nome: 'Vendedor' } }],
+        data: [{ claim: { nome: 'Admin' } }],
         resolve: {
           fornecedor: FornecedorResolve,
         },

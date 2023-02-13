@@ -37,18 +37,22 @@ import { AuthGuard } from './shared/guard/auth.guard';
 import { AcessoNegadoComponent } from './pages/acesso-negado/acesso-negado.component';
 import { EtiquetasGuard } from './pages/etiquetas/etiquetas.guard';
 import { EtiquetasComponent } from './pages/etiquetas/etiquetas.component';
+import { EstoqueGuard } from './pages/estoque/services/estoque.guard';
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/estoque', pathMatch: 'full' },
   {
-    path: 'dashboard',
-    component: DashboardComponent,
+    path: 'estoque',
     canActivate: [AuthGuard],
+    loadChildren: () =>
+    import('./pages/estoque/estoque.module').then(
+      (m) => m.EstoqueModule
+    ),
   },
   {
     path: 'etiquetas',
     component: EtiquetasComponent,
     canActivate: [EtiquetasGuard],
-    data: [{ claim: { nome: 'Vendedor' } }],
+    data: [{ claim: { nome: 'Admin' } }],
   },
   {
     path: 'authentication',

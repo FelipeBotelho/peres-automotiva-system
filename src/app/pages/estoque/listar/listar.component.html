@@ -1,0 +1,319 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Consultar Estoque</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <span routerLink="/" class="pointer">Home</span>
+        </li>
+        <li class="breadcrumb-item active">Consultar Estoque</li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Pesquisar Peça</h5>
+          <form
+            novalidate="novalidate"
+            (ngSubmit)="pesquisar()"
+            [formGroup]="produtoForm"
+            style="display: contents"
+          >
+            <div class="d-flex align-items-start">
+              <div
+                class="nav flex-column nav-pills me-3"
+                id="v-pills-tab"
+                role="tablist"
+                aria-orientation="vertical"
+              >
+                <button
+                  class="nav-link active"
+                  id="v-pills-home-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#v-pills-home"
+                  type="button"
+                  role="tab"
+                  aria-controls="v-pills-home"
+                  aria-selected="true"
+                >
+                  Filtros
+                </button>
+                <button
+                  class="nav-link"
+                  id="v-pills-profile-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#v-pills-profile"
+                  type="button"
+                  role="tab"
+                  aria-controls="v-pills-profile"
+                  aria-selected="false"
+                >
+                  Palavras Chave
+                </button>
+              </div>
+              <div
+                class="tab-content"
+                id="v-pills-tabContent"
+                style="width: 100%"
+              >
+                <div
+                  class="tab-pane fade show active"
+                  id="v-pills-home"
+                  role="tabpanel"
+                  aria-labelledby="v-pills-home-tab"
+                >
+                  <div class="row mt-3">
+                    <div class="col-6">
+                      <label class="form-label">Nome</label>
+                      <div>
+                        <input
+                          class="form-control"
+                          id="nome"
+                          type="text"
+                          placeholder="Nome (requerido)"
+                          formControlName="nome"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="form-group col-6">
+                      <label class="form-label">Código</label>
+                      <div>
+                        <input
+                          class="form-control"
+                          id="codigo"
+                          type="text"
+                          placeholder="Código do Produto"
+                          formControlName="codigo"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="form-group col-4">
+                      <label class="form-label">Categoria</label>
+
+                      <ng-select
+                        id="categoria"
+                        [items]="categorias"
+                        formControlName="categoria"
+                        class="custom"
+                        bindLabel="nome"
+                        class="custom"
+                        notFoundText="Nenhum Item Encontrado"
+                      >
+                      </ng-select>
+                    </div>
+                    <div class="form-group col-4">
+                      <label class="form-label">Marca</label>
+                      <ng-select
+                        id="marca"
+                        [items]="marcas"
+                        formControlName="marca"
+                        bindLabel="nome"
+                        class="custom"
+                        notFoundText="Nenhum Item Encontrado"
+                      >
+                      </ng-select>
+                    </div>
+                    <div class="form-group col-4">
+                      <label class="form-label">Fornecedor</label>
+                      <ng-select
+                        id="fornecedor"
+                        [items]="fornecedores"
+                        formControlName="fornecedor"
+                        class="custom"
+                        bindLabel="nome"
+                        class="custom"
+                        notFoundText="Nenhum Item Encontrado"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="tab-pane fade"
+                  id="v-pills-profile"
+                  role="tabpanel"
+                  aria-labelledby="v-pills-profile-tab"
+                >
+                  <div class="row mt-3">
+                    <div class="form-group col-12">
+                      <label class="form-label">Palavras Chave</label>
+                      <div>
+                        <input
+                          class="form-control"
+                          type="text"
+                          id="descricao"
+                          placeholder="Entre com palavras chave da Peça"
+                          formControlName="descricao"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div
+                class="col-12"
+                style="display: flex; justify-content: end; gap: 1rem"
+              >
+                <input
+                  type="submit"
+                  value="Pesquisar"
+                  class="btn btn-primary"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card" *ngIf="pecas.length > 0">
+        <div class="card-body">
+          <h5 class="card-title">Peças Encontradas</h5>
+          <table
+            datatable
+            [dtOptions]="dtOptions"
+            style="width: 100%"
+            class="row-border hover table datatable"
+          >
+            <thead>
+              <tr>
+                <th class="text-center" scope="col"></th>
+                <th class="text-center" scope="col">Código</th>
+                <th class="text-center" scope="col">Nome</th>
+                <th class="text-center" scope="col">Descrição</th>
+                <th class="text-center" scope="col">Quantidade</th>
+                <th class="text-center" scope="col">Valor</th>
+                <th class="text-center" scope="col">Localização</th>
+                <th class="text-center" scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of pecas; let last = last">
+                <td class="text-center">
+                  <img
+                    data-bs-toggle="modal"
+                    data-bs-target="#basicModal"
+                    (click)="abrirModalImagem(p.imagem)"
+                    src="{{ p.imagem }}"
+                    style="width: 70px; height: 70px"
+                  />
+                </td>
+                <td class="text-center">{{ p.codigo }}</td>
+                <td class="text-center">
+                  {{ p.nome }}
+                </td>
+                <td class="text-center">
+                  {{ p.descricao }}
+                </td>
+                <td class="text-center">
+                  {{ p.estoque.quantidade }}
+                </td>
+                <td class="text-center">
+                  {{ p.valor | currency }}
+                </td>
+                <td class="text-center">
+                  {{ getFormattedLocation(p.estoque.localizacao) }}
+                </td>
+                <td class="text-center">
+                  <a class="btn btn-info" [routerLink]="['/estoque/detalhes', p.id]">
+                    <span class="ri-phone-find-line"></span> </a
+                  >&nbsp;
+                  <a
+                    class="btn btn-warning"
+                    data-bs-toggle="modal"
+                    data-bs-target="#basicModalEdit"
+                    (click)="abrirModalEdit(p)"
+                  >
+                    <span class="ri-pencil-line"></span>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="modal fade" id="basicModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalhes da Peça</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body d-flex justify-content-center">
+        <img style="width: 600px" [src]="imageSelected" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="basicModalEdit" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Atualizar Estoque</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body d-flex">
+        <div class="row" style="width: 100%;">
+          <div class="form-group col-12">
+            <label>Quantidade em Estoque</label>
+            <div>
+              <input
+                class="form-control"
+                type="number"
+                maxlength="3"
+                [(ngModel)]="qtdItem"
+              />
+            </div>
+          </div>
+          <div class="form-group col-12 mt-3">
+            <label class="form-label">Localização do Item</label>
+            <div>
+              <input
+                class="form-control"
+                type="text"
+                id="localizacao"
+                [(ngModel)]="locationItem"
+                [specialCharacters]="['C', 'P', 'E', '-', '_']"
+                [showMaskTyped]="true"
+                mask="C-00_P-00_E-00"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="alterarItemEstoque()" class="btn btn-primary" data-bs-dismiss="modal">
+          Alterar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

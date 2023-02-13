@@ -4,6 +4,8 @@ import { ProdutoResolve } from '../produto/services/produto.resolve';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 
 import { EstoqueAppComponent } from './estoque.app.component';
+import { ListaComponent } from './listar/listar.component';
+import { EstoqueGuard } from './services/estoque.guard';
 import { EstoqueResolve } from './services/estoque.resolve';
 
 const estoqueRouterConfig: Routes = [
@@ -11,44 +13,26 @@ const estoqueRouterConfig: Routes = [
     path: '',
     component: EstoqueAppComponent,
     children: [
-      //   {
-      //     path: 'listar-todos',
-      //     component: ListaComponent,
-      //     canActivate: [FornececedorGuard],
-      //   },
-      //   {
-      //     path: 'adicionar-novo',
-      //     component: NovoComponent,
-      //     canDeactivate: [FornececedorGuard],
-      //     canActivate: [FornececedorGuard],
-      //     data: [{ claim: { nome: 'Vendedor' } }],
-      //   },
-      //   {
-      //     path: 'editar/:id',
-      //     component: EditarComponent,
-      //     canActivate: [FornececedorGuard],
-      //     data: [{ claim: { nome: 'Vendedor' } }],
-      //     resolve: {
-      //       fornecedor: FornecedorResolve,
-      //     },
-      //   },
       {
-        path: 'detalhes/:id',
-        component: DetalhesComponent,
+        path: 'consultar-estoque',
+        component: ListaComponent,
+        canActivate: [EstoqueGuard],
+        data: [{ claim: { nome: 'Admin|Vendedor' } }],
         resolve: {
           produto: ProdutoResolve,
           estoque: EstoqueResolve,
         },
       },
-      //   {
-      //     path: 'excluir/:id',
-      //     component: ExcluirComponent,
-      //     canActivate: [FornececedorGuard],
-      //     data: [{ claim: { nome: 'Vendedor' } }],
-      //     resolve: {
-      //       fornecedor: FornecedorResolve,
-      //     },
-      //   },
+      {
+        path: 'detalhes/:id',
+        component: DetalhesComponent,
+        canActivate: [EstoqueGuard],
+        data: [{ claim: { nome: 'Admin|Vendedor' } }],
+        resolve: {
+          produto: ProdutoResolve,
+          estoque: EstoqueResolve,
+        },
+      },
     ],
   },
 ];

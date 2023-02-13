@@ -61,6 +61,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QRCodeModule } from 'angularx-qrcode';
 import { EtiquetasComponent } from './pages/etiquetas/etiquetas.component';
 import { EtiquetasGuard } from './pages/etiquetas/etiquetas.guard';
+import { EstoqueGuard } from './pages/estoque/services/estoque.guard';
 
 registerLocaleData(localePt, 'pt');
 @NgModule({
@@ -137,7 +138,7 @@ registerLocaleData(localePt, 'pt');
     },
     AuthService,
     UserRoleService,
-    EtiquetasGuard
+    EtiquetasGuard,
   ],
   bootstrap: [AppComponent],
 })

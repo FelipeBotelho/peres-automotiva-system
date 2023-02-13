@@ -12,4 +12,8 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  isInRole(role: string){
+    const userRole = localStorage.getItem('user-role');
+    return role?.includes(userRole!);
+  }
 }

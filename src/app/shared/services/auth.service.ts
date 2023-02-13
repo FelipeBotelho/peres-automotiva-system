@@ -52,7 +52,16 @@ export class AuthService {
         // this.SetUserData(result.user);
         this.afAuth.authState.subscribe((user) => {
           if (user) {
-            this.router.navigate(['/dashboard']);
+            const role = this.userRoleService.GetUserRole(user.uid);
+            role.valueChanges().subscribe({
+              next: (data) => {
+                if (this.isLoggedIn) {
+                  const role = data.roles;
+                  localStorage.setItem('user-role', role);
+                  this.router.navigate(['/estoque/consultar-estoque']);
+                }
+              },
+            });
           }
         });
       })
@@ -60,26 +69,7 @@ export class AuthService {
         this.toastr.error(error.message);
       });
   }
-  SignUp(name: string, email: string, password: string) {
-    return this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        if (result.user) {
-          result.user
-            .updateProfile({
-              displayName: name,
-            })
-            .then((data) => {
-              this.SendVerificationMail();
-              this.SetUserRoles(result.user);
-              this.SetUserData(result.user);
-            });
-        }
-      })
-      .catch((error) => {
-        this.toastr.error(error.message);
-      });
-  }
+
 
   SendVerificationMail() {
     return this.afAuth.currentUser
@@ -119,6 +109,27 @@ export class AuthService {
       })
       .catch((error) => {
         this.toastr.error(error);
+      });
+  }
+
+  SignUp(name: string, email: string, password: string) {
+    return this.afAuth
+      .createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        if (result.user) {
+          result.user
+            .updateProfile({
+              displayName: name,
+            })
+            .then((data) => {
+              this.SendVerificationMail();
+              this.SetUserRoles(result.user);
+              this.SetUserData(result.user);
+            });
+        }
+      })
+      .catch((error) => {
+        this.toastr.error(error.message);
       });
   }
 

@@ -15,10 +15,13 @@ import { EstoqueGuard } from './services/estoque.guard';
 import { EstoqueResolve } from './services/estoque.resolve';
 import { EstoqueService } from './services/estoque.service';
 import { DetalhesComponent } from './detalhes/detalhes.component';
+import { ListaComponent } from './listar/listar.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
     EstoqueAppComponent,
+    ListaComponent,
     DetalhesComponent
   ],
   imports: [
@@ -27,6 +30,7 @@ import { DetalhesComponent } from './detalhes/detalhes.component';
     FormsModule,
     DataTablesModule,
     ReactiveFormsModule,
+    NgSelectModule,
     TextMaskModule,
     NgxSpinnerModule,
     NgxMaskModule,
