@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProdutoResolve } from '../produto/services/produto.resolve';
+import { BaixoEstoqueComponent } from './baixo-estoque/baixo-estoque.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 
 import { EstoqueAppComponent } from './estoque.app.component';
@@ -32,6 +33,12 @@ const estoqueRouterConfig: Routes = [
           produto: ProdutoResolve,
           estoque: EstoqueResolve,
         },
+      },
+      {
+        path: 'baixo-estoque',
+        component: BaixoEstoqueComponent,
+        canActivate: [EstoqueGuard],
+        data: [{ claim: { nome: 'Admin' } }],
       },
     ],
   },

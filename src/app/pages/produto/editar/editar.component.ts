@@ -108,7 +108,7 @@ export class EditarComponent extends FormBaseComponent implements OnInit {
       ativo: [true, [Validators.required]],
     });
     debugger;
-    this.produtoForm.patchValue({...this.produto, imagem:''});
+    this.produtoForm.patchValue({ ...this.produto, imagem: '' });
   }
 
   ngAfterViewInit(): void {
@@ -136,6 +136,10 @@ export class EditarComponent extends FormBaseComponent implements OnInit {
 
       let objToSend: any = {};
       if (this.imageChangedEvent) {
+        this.produto.descricao = this.produto.descricao
+          ?.replaceAll(',', '')
+          .split(' ')
+          .join(', ');
         if (this.imagemNome == this.produto.imagemNome) {
           objToSend = {
             produto: this.produto,
@@ -147,7 +151,7 @@ export class EditarComponent extends FormBaseComponent implements OnInit {
             produto: this.produto,
             imagem: this.imageChangedEvent,
             nomeImagem: this.imagemNome,
-            oldImage: this.produto.imagemNome
+            oldImage: this.produto.imagemNome,
           };
         }
       } else {

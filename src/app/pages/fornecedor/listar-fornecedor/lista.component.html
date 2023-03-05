@@ -30,28 +30,28 @@
           >
             <thead>
               <tr>
-                <th scope="col">Nome</th>
-                <th scope="col">Documento</th>
-                <th scope="col">Contato</th>
-                <th scope="col">Ativo</th>
-                <th scope="col">Ações</th>
+                <th class="text-center" scope="col">Nome</th>
+                <th class="text-center" scope="col">Documento</th>
+                <th class="text-center" scope="col">Contato</th>
+                <th class="text-center" scope="col">Ativo</th>
+                <th class="text-center" scope="col">Ações</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let fornecedor of fornecedores; let last = last">
-                <td>{{ fornecedor.nome }}</td>
-                <td>
+                <td class="text-center">{{ fornecedor.nome }}</td>
+                <td class="text-center">
                   {{ fornecedor.documento | mask : "00.000.000/0000-00" }}
                 </td>
-                <td>
+                <td class="text-center">
                   {{
                     fornecedor.contato.length > 11
                       ? (fornecedor.contato | mask : "(000) 0 0000-0000")
                       : (fornecedor.contato | mask : "(000) 0000-0000")
                   }}
                 </td>
-                <td>
-                  <div class="form-check form-switch">
+                <td class="text-center">
+                  <div class="form-check form-switch d-flex justify-content-center" >
                     <input
                       [checked]="fornecedor.ativo"
                       class="form-check-input"
@@ -61,7 +61,7 @@
                     />
                   </div>
                 </td>
-                <td>
+                <td class="text-center">
                   <a
                     class="btn btn-info"
                     [routerLink]="['/fornecedores/detalhes', fornecedor.id]"

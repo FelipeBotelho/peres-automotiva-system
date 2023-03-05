@@ -17,12 +17,14 @@ import { EstoqueService } from './services/estoque.service';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 import { ListaComponent } from './listar/listar.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { BaixoEstoqueComponent } from './baixo-estoque/baixo-estoque.component';
 
 @NgModule({
   declarations: [
     EstoqueAppComponent,
     ListaComponent,
-    DetalhesComponent
+    DetalhesComponent,
+    BaixoEstoqueComponent
   ],
   imports: [
     CommonModule,

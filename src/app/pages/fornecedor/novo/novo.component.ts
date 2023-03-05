@@ -151,11 +151,9 @@ export class NovoComponent extends FormBaseComponent implements OnInit {
       this.fornecedor.documento = StringUtils.somenteNumeros(
         this.fornecedor.documento
       );
-      // forçando o tipo fornecedor ser serializado como INT
 
       this.fornecedorService.novoFornecedor(this.fornecedor).subscribe({
         next: (sucesso: any = true) => {
-          debugger;
           this.processarSucesso(sucesso);
         },
         error: (falha) => {

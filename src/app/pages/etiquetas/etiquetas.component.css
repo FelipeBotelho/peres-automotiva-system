@@ -4,12 +4,14 @@ a {
 a:hover {
   color: #fff;
 }
-.desc-etiqueta p{
-  margin:0;
+.desc-etiqueta p {
+  margin: 0;
 }
-.etiqueta{
+.etiqueta {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ccc
+  border: 1px solid #ccc;
+}
+#pdf-area {
 }

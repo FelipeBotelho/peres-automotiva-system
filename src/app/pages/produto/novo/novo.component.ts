@@ -80,6 +80,9 @@ export class NovoComponent extends FormBaseComponent implements OnInit {
       quantidade: {
         required: 'Informe a quantidade de itens',
       },
+      quantidadeMinima: {
+        required: 'Informe a quantidade Mínima que este item possa ter',
+      },
     };
 
     super.configurarMensagensValidacaoBase(this.validationMessages);
@@ -108,8 +111,9 @@ export class NovoComponent extends FormBaseComponent implements OnInit {
       imagem: [''],
       valor: ['', [Validators.required]],
       ativo: [true, [Validators.required]],
-      quantidade:['',[Validators.required]],
-      localizacao:['']
+      quantidade: ['', [Validators.required]],
+      quantidadeMinima: ['', [Validators.required]],
+      localizacao: [''],
     });
   }
 
@@ -125,6 +129,10 @@ export class NovoComponent extends FormBaseComponent implements OnInit {
       this.produto = Object.assign({}, this.produto, this.produtoForm.value);
       let objToSend: any = {};
       if (this.imageChangedEvent) {
+        this.produto.descricao = this.produto.descricao
+          ?.replaceAll(',', '')
+          .split(' ')
+          .join(', ');
         objToSend = {
           produto: this.produto,
           imagem: this.imageChangedEvent,
@@ -150,7 +158,7 @@ export class NovoComponent extends FormBaseComponent implements OnInit {
       next: (data) => {
         this.toastr.success('Categoria Incluida com Sucesso!');
         this.isAddingCategoria = false;
-        this.cate = "";
+        this.cate = '';
       },
     });
   }

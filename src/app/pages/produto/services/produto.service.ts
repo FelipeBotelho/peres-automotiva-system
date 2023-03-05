@@ -136,6 +136,7 @@ export class ProdutoService extends BaseService {
             produto.produto.imagem = downloadURL;
             const localizacao = produto.produto.localizacao;
             const qtd = produto.produto.quantidade;
+            const quantidadeMinima = produto.produto.quantidadeMinima;
             delete produto.produto.quantidade;
             delete produto.produto.localizacao;
             this.db
@@ -148,7 +149,8 @@ export class ProdutoService extends BaseService {
                   .set({
                     idProduto: data.id,
                     localizacao: localizacao,
-                    quantidade: qtd,
+                    quantidade: +qtd,
+                    quantidadeMinima: +quantidadeMinima, 
                   })
                   .then((data) => {
                     console.log(data);

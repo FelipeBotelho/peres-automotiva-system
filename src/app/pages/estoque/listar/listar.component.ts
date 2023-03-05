@@ -31,10 +31,11 @@ export class ListaComponent implements OnInit {
   categorias: commonSimpleType[] = [];
   produtos: Produto[] = [];
   estoque: Estoque[] = [];
-  imageSelected = ""
+  imageSelected = '';
   locationItem = null;
-  qtdItem = null
+  qtdItem = null;
   selectedItem: any = null;
+  pesquisaPorPalavra: boolean = false;
 
   isLoaded: boolean = false;
   dtOptions: DataTables.Settings = DEFAULT_DATATABLE_CONFIG;
@@ -77,102 +78,101 @@ export class ListaComponent implements OnInit {
     this.imageSelected = imagem;
   }
 
-  abrirModalEdit(item: any){
+  abrirModalEdit(item: any) {
     this.locationItem = item.estoque.localizacao;
     this.qtdItem = item.estoque.quantidade;
     this.selectedItem = item;
   }
 
-  alterarItemEstoque(){
+  alterarItemEstoque() {
     this.selectedItem.estoque.localizacao = this.locationItem;
     this.selectedItem.estoque.quantidade = this.qtdItem;
-    this.estoqueService.atualizarEstoque(this.selectedItem.estoque.id,this.selectedItem.estoque).subscribe({
-      next: (data: any) =>{
-        this.toastr.success("Estoque Atualizado com sucesso!");
-      }
-    });
+    this.estoqueService
+      .atualizarEstoque(this.selectedItem.estoque.id, this.selectedItem.estoque)
+      .subscribe({
+        next: (data: any) => {
+          this.toastr.success('Estoque Atualizado com sucesso!');
+        },
+      });
   }
 
   pesquisar() {
     const filtros = this.produtoForm.value;
     const filt = [];
-    if (filtros.descricao != '') {
-      const tags = filtros.descricao.split(' ');
-      tags.map((tag: any) => {
-        const filtradosPorDescricao = this.produtos.filter(
-          (x) =>
-            x.nome
-              .toLocaleLowerCase()
-              .includes(tag.trim().toLocaleLowerCase()) ||
-            x.codigo
-              ?.toLocaleLowerCase()
-              ?.includes(tag.trim().toLocaleLowerCase()) ||
-            x.descricao
-              ?.toLocaleLowerCase()
-              .includes(tag.trim().toLocaleLowerCase()) ||
-            x.marca?.nome
-              ?.toLocaleLowerCase()
-              .includes(tag.trim().toLocaleLowerCase()) ||
-            x.categoria?.nome
-              ?.toLocaleLowerCase()
-              .includes(tag.trim().toLocaleLowerCase()) ||
-            x.fornecedor?.nome
-              ?.toLocaleLowerCase()
-              .includes(tag.trim().toLocaleLowerCase())
+    if (this.pesquisaPorPalavra) {
+      if (filtros.descricao != '') {
+        const tags = filtros.descricao.split(' ');
+        let uppercaseTags = tags.map((element: string) =>
+          element.toUpperCase().trim()
         );
-        filt.push(...filtradosPorDescricao);
-      });
-    }
-    let filtradosPorCampos: any = [];
-    filtradosPorCampos = JSON.parse(JSON.stringify(this.produtos));
 
-    if (filtros.nome != '' && filtros.nome != null) {
-      filtradosPorCampos = filtradosPorCampos.filter((x: any) =>
-        x.nome.toLocaleLowerCase().includes(filtros.nome.toLocaleLowerCase())
-      );
-    }
-    if (filtros.codigo != '' && filtros.codigo != null) {
-      filtradosPorCampos = filtradosPorCampos.filter((x: any) =>
-        x.codigo
-          ?.toLocaleLowerCase()
-          .includes(filtros.codigo.toLocaleLowerCase())
-      );
-    }
-    if (
-      filtros.categoria != null &&
-      filtros.categoria != '' &&
-      filtros.categoria.nome != ''
-    ) {
-      filtradosPorCampos = filtradosPorCampos.filter((x: any) =>
-        x.categoria.nome
-          .toLocaleLowerCase()
-          .includes(filtros.categoria.nome.toLocaleLowerCase())
-      );
-    }
-    if (
-      filtros.marca != null &&
-      filtros.marca != '' &&
-      filtros.marca.nome != ''
-    ) {
-      filtradosPorCampos = filtradosPorCampos.filter((x: any) =>
-        x.marca.nome
-          .toLocaleLowerCase()
-          .includes(filtros.marca.nome.toLocaleLowerCase())
-      );
-    }
-    if (
-      filtros.fornecedor != null &&
-      filtros.fornecedor != '' &&
-      filtros.fornecedor.nome != ''
-    ) {
-      filtradosPorCampos = filtradosPorCampos.filter((x: any) =>
-        x.fornecedor.nome
-          .toLocaleLowerCase()
-          .includes(filtros.fornecedor.nome.toLocaleLowerCase())
-      );
-    }
+        this.produtos.map((prod) => {
+          const desciption = prod.descricao?.split(',');
+          if (desciption) {
+            const uppercaseDescription = desciption.map((element: string) =>
+              element.toUpperCase().trim()
+            );
+            const hasAllElems = uppercaseTags.every((elem: any) =>
+              uppercaseDescription.includes(elem)
+            );
+            if (hasAllElems) {
+              filt.push(prod);
+            }
+          }
+        });
+      }
+    } else {
+      let filtradosPorCampos: any = [];
+      filtradosPorCampos = JSON.parse(JSON.stringify(this.produtos));
 
-    filt.push(...filtradosPorCampos);
+      if (filtros.nome != '' && filtros.nome != null) {
+        filtradosPorCampos = filtradosPorCampos.filter((x: any) =>
+          x.nome.toLocaleLowerCase().includes(filtros.nome.toLocaleLowerCase())
+        );
+      }
+      if (filtros.codigo != '' && filtros.codigo != null) {
+        filtradosPorCampos = filtradosPorCampos.filter((x: any) =>
+          x.codigo
+            ?.toLocaleLowerCase()
+            .includes(filtros.codigo.toLocaleLowerCase())
+        );
+      }
+      if (
+        filtros.categoria != null &&
+        filtros.categoria != '' &&
+        filtros.categoria.nome != ''
+      ) {
+        filtradosPorCampos = filtradosPorCampos.filter((x: any) =>
+          x.categoria.nome
+            .toLocaleLowerCase()
+            .includes(filtros.categoria.nome.toLocaleLowerCase())
+        );
+      }
+      if (
+        filtros.marca != null &&
+        filtros.marca != '' &&
+        filtros.marca.nome != ''
+      ) {
+        filtradosPorCampos = filtradosPorCampos.filter((x: any) =>
+          x.marca.nome
+            .toLocaleLowerCase()
+            .includes(filtros.marca.nome.toLocaleLowerCase())
+        );
+      }
+      if (
+        filtros.fornecedor != null &&
+        filtros.fornecedor != '' &&
+        filtros.fornecedor.nome != ''
+      ) {
+        filtradosPorCampos = filtradosPorCampos.filter((x: any) =>
+          x.fornecedor.nome
+            .toLocaleLowerCase()
+            .includes(filtros.fornecedor.nome.toLocaleLowerCase())
+        );
+      }
+
+      filt.push(...filtradosPorCampos);
+    }
 
     const filtrados = new Set(filt);
     this.pecas = Array.from(filtrados);

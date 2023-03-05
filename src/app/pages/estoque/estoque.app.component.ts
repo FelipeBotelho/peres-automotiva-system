@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   template: '<router-outlet></router-outlet>',
 })
 export class EstoqueAppComponent {
-  constructor(private router: Router){
-    this.router.navigate(['/estoque/consultar-estoque']);
-  }
+  // constructor(private router: Router){
+  //   this.router.navigate(['/estoque/consultar-estoque']);
+  // }
 }

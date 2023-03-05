@@ -1,0 +1,111 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Peças em Baixo Estoque</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <span routerLink="/estoque/consultar-estoque" class="pointer"
+            >Home</span
+          >
+        </li>
+        <li class="breadcrumb-item">Administrativo</li>
+        <li class="breadcrumb-item active">Consultar Estoque</li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <div class="col-lg-12">
+      <div class="card" *ngIf="dados.length > 0">
+        <div class="card-body">
+          <h5 class="card-title">Peças em Baixo Estoque</h5>
+          <table
+            datatable
+            [dtOptions]="dtOptions"
+            style="width: 100%"
+            class="row-border hover table datatable"
+          >
+            <thead>
+              <tr>
+                <th class="text-center" scope="col"></th>
+                <th class="text-center" scope="col">Código</th>
+                <th class="text-center" scope="col">Nome</th>
+                <th class="text-center" scope="col">Quantidade</th>
+                <th class="text-center" scope="col">Localização</th>
+                <th class="text-center" scope="col">Fornecedor</th>
+                <th class="text-center" scope="col">Contato</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of dados; let last = last">
+                <td class="text-center">
+                  <img
+                    data-bs-toggle="modal"
+                    data-bs-target="#basicModal"
+                    (click)="abrirModalImagem(p.imagem)"
+                    src="{{ p.imagem }}"
+                    style="width: 70px; height: 70px"
+                  />
+                </td>
+                <td class="text-center">{{ p.codigo }}</td>
+                <td class="text-center">
+                  {{ p.nome }}
+                </td>
+                <td class="text-center">
+                  {{ p.quantidade }}
+                </td>
+                <td class="text-center">
+                  {{ getFormattedLocation(p.localizacao) }}
+                </td>
+                <td class="text-center">
+                  {{ p.forn.nome }}
+                </td>
+                <td class="text-center">
+                  {{
+                    p.forn.contato.length > 11
+                      ? ( p.forn.contato | mask : "(000) 0 0000-0000")
+                      : ( p.forn.contato | mask : "(000) 0000-0000")
+                  }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card" *ngIf="dados.length == 0">
+        <div class="p-3">
+          <div
+            class="align-items-middle justify-content-center flex-column no-result-text"
+          >
+            <h3 class="d-flex justify-content-center">Nenhuma Peça em Baixo Estoque</h3>
+            <small class="d-flex justify-content-center">
+              Não localizamos peças em baixo estoque.
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="modal fade" id="basicModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalhes da Peça</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body d-flex justify-content-center">
+        <img style="width: 600px" [src]="imageSelected" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

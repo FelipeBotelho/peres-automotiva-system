@@ -41,7 +41,7 @@ export class FornecedorService extends BaseService {
     return this.fornecedorRef.valueChanges({ idField: 'id' }).pipe(
       map((data) => {
         return data.map((dado) => {
-          return { id: dado.id, nome: dado.nome };
+          return { id: dado.id, nome: dado.nome, contato: dado.contato };
         });
       })
     );

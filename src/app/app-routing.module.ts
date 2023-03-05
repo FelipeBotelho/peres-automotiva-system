@@ -39,7 +39,7 @@ import { EtiquetasGuard } from './pages/etiquetas/etiquetas.guard';
 import { EtiquetasComponent } from './pages/etiquetas/etiquetas.component';
 import { EstoqueGuard } from './pages/estoque/services/estoque.guard';
 const routes: Routes = [
-  { path: '', redirectTo: '/estoque', pathMatch: 'full' },
+  { path: '', redirectTo: '/estoque/consultar-estoque', pathMatch: 'full' },
   {
     path: 'estoque',
     canActivate: [AuthGuard],

@@ -52,7 +52,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DataTablesModule } from 'angular-datatables';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ProdutoModule } from './pages/produto/produto.module';
-import { CommonModule, registerLocaleData } from '@angular/common';
+import { APP_BASE_HREF, CommonModule, registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { EstoqueModule } from './pages/estoque/estoque.module';
@@ -128,6 +128,7 @@ registerLocaleData(localePt, 'pt');
     QRCodeModule
   ],
   providers: [
+    // { provide: APP_BASE_HREF, useValue: '/estoque' },
     {
       provide: LOCALE_ID,
       useValue: 'pt',

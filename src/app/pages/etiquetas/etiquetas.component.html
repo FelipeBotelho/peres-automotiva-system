@@ -40,6 +40,7 @@
                   role="tab"
                   aria-controls="v-pills-home"
                   aria-selected="true"
+                  (click)="pesquisaPorPalavra = false"
                 >
                   Filtros
                 </button>
@@ -52,6 +53,7 @@
                   role="tab"
                   aria-controls="v-pills-profile"
                   aria-selected="false"
+                  (click)="pesquisaPorPalavra = true"
                 >
                   Palavras Chave
                 </button>
@@ -180,7 +182,7 @@
           <div class="card-body">
             <h5 class="card-title">Etiquetas Geradas</h5>
             <div id="pdf-area" class="row">
-              <div class="col-2 etiqueta" *ngFor="let e of pecas">
+              <div class="col-3 etiqueta" *ngFor="let e of pecas">
                 <div class="col-6">
                   <qrcode
                     [qrdata]="obterLinkQrCode(e.id)"
@@ -213,6 +215,7 @@
           </div>
         </div>
       </div>
+      <div id="canva"></div>
     </div>
   </section>
 </main>

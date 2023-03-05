@@ -176,7 +176,7 @@
                   </div>
                 </div>
                 <div class="row mt-3">
-                  <div class="form-group col-4">
+                  <div class="form-group col-2">
                     <label class="form-label">Imagem</label>
                     <div class="col-sm-12">
                       <input
@@ -207,6 +207,27 @@
                         *ngIf="displayMessage['quantidade']"
                       >
                         <p [innerHTML]="displayMessage['quantidade']"></p>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group col-2">
+                    <label class="form-label">Quantidade Mínima</label>
+                    <div>
+                      <input
+                        class="form-control"
+                        id="qtdmin"
+                        type="number"
+                        placeholder="Quantidade Mínima"
+                        formControlName="quantidadeMinima"
+                        [ngClass]="{
+                          'is-invalid': displayMessage['quantidadeMinima']
+                        }"
+                      />
+                      <span
+                        class="text-danger"
+                        *ngIf="displayMessage['quantidadeMinima']"
+                      >
+                        <p [innerHTML]="displayMessage['quantidadeMinima']"></p>
                       </span>
                     </div>
                   </div>
